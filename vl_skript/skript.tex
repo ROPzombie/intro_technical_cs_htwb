@@ -1,0 +1,259 @@
+\documentclass[numbers=endperiod]{scrartcl}
+
+% Set \germantrue if the document is in German language
+\newif\ifgerman
+%\germanfalse
+\germantrue
+\ifgerman
+  \def\babellanguage{ngerman}
+  % Most fonts do not advertise a specialised
+  % Latin/English (latn.ENG) or
+  % Latin/German 
+  % but only Latin (latn) script.
+  % Thus, when loading fonts, ask for the generic version.
+  \def\babelfontlanguage{Default}
+  \def\babelscript{Latin}
+
+  \def\biblatexsorting{de_DE}
+  \def\namecorollary{Korollar}
+  \def\namedefinition{Definition}
+  \def\nameexercise{Aufgabe}
+  \def\namelemma{Lemma}
+  \def\nameproposition{Aussage}
+  \def\nameremark{Anmerkung}
+  \def\nametheorem{Satz}
+\else
+  \def\babellanguage{english}
+  \def\babelfontlanguage{Default}
+  \def\babelscript{Latin}
+  \def\biblatexsorting{en_US}
+  \def\namecorollary{Corollary}
+  \def\namedefinition{Definition}
+  \def\nameexercise{Exercise}
+  \def\namelemma{Lemma}
+  \def\nameproposition{Proposition}
+  \def\nameremark{Remark}
+  \def\nametheorem{Theorem}
+\fi
+
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amsthm}
+% You can declare additional operators, eg.
+%\DeclareMathOperator{\rem}{rem}
+
+\usepackage{iftex}
+\ifPDFTeX
+  % Warning: Inputenc is only a hack to teach pdfTeX Unicode.  Beware of dragons!
+  \usepackage[utf8]{inputenc}
+  \usepackage[T1]{fontenc}
+  \usepackage{lmodern}
+  \usepackage[\babellanguage]{babel}
+\else
+  \usepackage{fontspec}
+  \usepackage{babel}
+
+  \babelprovide[import,
+    language=\babelfontlanguage,
+    script=\babelscript,
+    main]{\babellanguage}
+  \usepackage{unicode-math}
+  % Load the Computer Modern Unicode OTF fonts from the system. Also see README.md 
+  \babelfont{rm}%
+    % Use non-lining numerals for non-math text
+    [Numbers=OldStyle]
+    {CMU Serif}
+  \babelfont{sf}{CMU Sans Serif}
+  \babelfont{tt}{CMU Typewriter Text}
+
+  % Make it look more like CM Math
+  % % https://tex.stackexchange.com/q/140754/90407
+  \setmathfont{Latin Modern Math}
+  \setmathfont[range=\mathbb]{TeX Gyre Termes Math}
+
+  % LM Math only provides the U+2216 code point for "set minus", however,
+  % unicode-math maps \setminus the "reverse solidus operator" U+29F5 which LMM
+  % doesn't provide, instead mapping \smallsetminus to U+2216.  However, whether
+  % you want a "small" set minux or a "long" is a font decision (IMHO), so
+  % remap \setminus to the correct Unicode code point.
+  % https://tex.stackexchange.com/a/140343/90407
+  % https://tex.stackexchange.com/a/161873/90407
+  \ExplSyntaxOn
+  \AtBeginDocument
+  {
+     \__um_process_symbol_noparse:nnn {"02216}{\setminus}{\mathbin}
+  }
+  \ExplSyntaxOff
+\fi
+
+% Protruding punctuation
+\usepackage{microtype}
+
+% \enquote{} for setting things in "quotes"
+\usepackage{csquotes}
+
+% Additional [H] specifier for floats that actually shouldn't be floats
+% but still be considered figures
+\usepackage{float}
+
+% To create custom itemizations, eg.
+% \begin{itemize}[label=\alph*)]
+\usepackage{enumitem}
+
+% Typesetting code, setup for C by default
+\usepackage{xcolor}
+\usepackage{listings}
+\lstdefinestyle{default}{%
+  numbers=left,
+  stepnumber=1,
+  numberstyle=\tiny,
+  basicstyle=\ttfamily,
+  backgroundcolor=\color{gray!8},
+  commentstyle=\color{green!60!blue}\itshape,
+  keywordstyle=\color{blue},
+  stringstyle=\color{blue!30!red},
+  tabsize=4,
+  keepspaces=true,
+}
+\lstset{style=default, language=C}
+
+% Break URLs at hyphens
+\PassOptionsToPackage{hyphens}{url}
+% Make PDF links work with non-latin languages via Unicode
+\usepackage[pdfusetitle,pdfencoding=auto]{hyperref}
+\pdfstringdefDisableCommands{
+  \def\@{}
+}
+
+% Typeset units with
+% \SI{8}{\bit} or \si{\bit}
+\usepackage[
+  binary-units=true,
+  % Make \num{42} and $\num{42}$ behave differently.
+  detect-mode,
+  detect-family,
+  detect-inline-family=math,
+]{siunitx}
+
+% Disable warning for biblatex < 3.14
+\makeatletter\def\blx@nowarnpolyglossia{}\makeatother
+\usepackage[
+  natbib=true,
+  backend=biber,
+  style=numeric,
+  citestyle=numeric,
+  sorting=nty,
+  sortlocale=\biblatexsorting,
+  seconds=true,
+  alldates=iso,
+]{biblatex}
+%\addbibresource{./bib.bib}
+
+% Headers & Footers
+\usepackage[headsepline]{scrlayer-scrpage}
+\pagestyle{scrheadings}
+% titling conflicts with \maketitle etc. from KOMA, but as long as we don't use
+% that this is fine.
+\usepackage{titling}
+\lohead*{\theauthor}
+\cohead*{\thetitle}
+%\rohead*{\today}
+\cofoot*{\thepage}
+
+% Blind text
+\usepackage{lipsum}
+
+
+
+\begin{document}
+
+\author{}
+\title{Vorlesungsskript -- Technische und logische Grundlagen der Informatik}
+% Add some neat environments for scripts and exercises
+
+\theoremstyle{definition}
+\newtheorem{definition}{\namedefinition}
+
+\theoremstyle{remark}
+\newtheorem{remark}{\nameremark}
+
+\theoremstyle{plain}
+\newtheorem{proposition}{\nameproposition}
+\newtheorem{theorem}{\nametheorem}
+\newtheorem{lemma}{\namelemma}
+\newtheorem{corollary}{\namecorollary}
+
+\newtheoremstyle{exercise}% name of the style to be used
+  {}         % measure of space to leave above the theorem. E.g.: 3pt
+  {}         % measure of space to leave below the theorem. E.g.: 3pt
+  {\upshape} % name of font to use in the body of the theorem
+  {}         % measure of space to indent
+  {\bfseries}% name of head font
+  {}         % punctuation between head and body
+  { }        % space after theorem head; " " = normal interword space
+  {%
+\thmname{#1}\thmnumber{ #2}.\thmnote{ (#3)}%  Manually specify head
+}
+\theoremstyle{exercise}
+\newtheorem{exercise}{\nameexercise}[section]
+
+
+\begin{center}
+\Huge{\textbf{Vorlesungsskript}}\\
+\Large{\textbf{Technische und logische Grundlagen der Informatik}}
+\end{center}
+
+% Example content
+\section{Signale im Zeit und Frequenzbereich}
+\begin{itemize}
+	\item Signal is the physical representation of data
+	\item Analog signal is a sequence of continuous values
+	\item Digital signal is a sequence of discrete values
+	\item Data is converted to signal which is sent over a transmission channel
+	\item Transmission channel = access points + physical medium carrying signal
+	\item The need to convert - Quantization
+	\begin{itemize}
+		\item Computers can only deal with digital data => discrete signal
+		\item Physical mediums are by nature analog => continuous signal
+		\item Must convert from digital signal to analog signal (and vice versa)
+	\end{itemize}
+	\item The need to measure -- Sampling
+	\begin{itemize}
+		\item Computers can only deal with discrete time
+		\item Physical mediums’ state vary continuously
+		\item Must rely on periodical measurements of the physical medium
+	\end{itemize}
+\end{itemize}
+
+\subsection{Grundlegende Signalverarbeitung}
+\subsection{Periodische Signale}
+
+\subsubsection{Signalkomposition}
+
+\section{Boolesche Algebra}
+
+\begin{theorem}[Gauß Summe]
+
+\end{theorem}
+\begin{proof}
+Der Beweis obliegt dem Leser als Übungsaufgabe.
+\end{proof}
+
+\begin{exercise}[Programmargumente ausgeben]
+Das folgende Programm iteriert über die Konsolenargumente, inklusive des
+Programmaufrufs:
+\begin{lstlisting}[style=default]
+int main(int argc, char *argv[])
+{
+	/* Loops over program arguments */
+	for (int i = 0; i <= argc; i++) {
+		printf("Argument %d: \"%s\"\n", argv[i]);
+	}
+}
+\end{lstlisting}
+\end{exercise}
+
+% End Example content
+
+\end{document}

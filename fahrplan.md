@@ -53,4 +53,7 @@
       * Gleitkommazahlen und Rundungsfehler
       * Praktische Realisierung
       * Gleitkommaarithmetik
- 4. Zeichencodierung
+  4. Zeichencodierung
+     * Codierung von Zeichen
+     * Character-Sets, -Maps & Code-Pages
+     * ASCII & Unicode
