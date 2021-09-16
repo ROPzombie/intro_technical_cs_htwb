@@ -1,5 +1,5 @@
 \documentclass[numbers=endperiod]{scrartcl}
-
+\usepackage{tikz}
 % Set \germantrue if the document is in German language
 \newif\ifgerman
 %\germanfalse
@@ -148,7 +148,7 @@
   seconds=true,
   alldates=iso,
 ]{biblatex}
-%\addbibresource{./bib.bib}
+\addbibresource{./sources.bib}
 
 % Headers & Footers
 \usepackage[headsepline]{scrlayer-scrpage}
@@ -201,11 +201,17 @@
 
 \begin{center}
 \Huge{\textbf{Vorlesungsskript}}\\
-\Large{\textbf{Technische und logische Grundlagen der Informatik}}
+\Large{\textbf{Technische und logische Grundlagen der Informatik}}\\
+\large{Version: Alpha v.0.1}
 \end{center}
+
+\tableofcontents
 
 % Example content
 \section{Signale im Zeit und Frequenzbereich}
+Folgender Abschnitt soll vor allem als Einleitung in das Thema dienen, da hier grundlegend erklärt wird, wie die Bits und Bytes auf dem Computer überhaupt entstehen bzw. übertragen werden können. Eine gute Quelle zur weiterführenden Literatur bietet: \cite{kemnitz2009technische1}
+
+\subsection{Signal}
 \begin{itemize}
 	\item Signal is the physical representation of data
 	\item Analog signal is a sequence of continuous values
@@ -226,12 +232,64 @@
 	\end{itemize}
 \end{itemize}
 
+ \begin{tikzpicture}
+    \draw (0,0) -- (12,0);
+    \draw (0.2,1)node[left,font=\tiny] {$y=1$} -- (11.8,1);
+    \draw (0.2,-1)node[left,font=\tiny] {$y=-1$} -- (11.8,-1); 
+    \foreach \x in {0,0.5,...,12}{
+    \draw (\x,-0.2)node [below,font=\tiny,] {\x} -- (\x,0.2) ;
+    }
+    \draw[ultra thick, red] (3,0) sin (4,1);    %% the real business in this line
+    \draw[ultra thick, blue] (4,1) cos (5,0);    %% the real business in this line
+    \draw[ultra thick, red] (5,0) sin (6,-1);    %% the real business in this line
+    \draw[ultra thick, blue] (6,-1) cos (7,0);    %% the real business in this line
+    \draw[ultra thick, red] (7,0)  sin (8,1);    %% the real business in this line
+    \draw[ultra thick, blue] (8,1) cos (9,0);    %% the real business in this line
+    \draw[ultra thick, red] (9,0) sin (10,-1);    %% the real business in this line
+    \draw[ultra thick, blue] (10,-1) cos (11,0);    %% the real business in this line
+    \end{tikzpicture}
+
 \subsection{Grundlegende Signalverarbeitung}
 \subsection{Periodische Signale}
 
 \subsubsection{Signalkomposition}
 
 \section{Boolesche Algebra}
+
+\section{Zahlenkodierung \& Zahlendarstellung}
+\begin{itemize}
+	\item Natürliche Zahlen ($\mathbb{N}$)
+	\begin{itemize}
+		\item Konstruktion durch Vervollständigung
+		\item Ziffernsysteme
+	\end{itemize}
+	\item Positionssysteme \& Positionssystem zur Basis $q$
+	\item Zifferndarstellung
+	\item Dualdarstellung \& Realisierung
+	\item Ganze Zahlen ($\mathbb{Z}$)
+	\begin{itemize}
+		\item Konstruktion durch Abschluß von $\mathbb{N}$ unter Subtraktion
+		\item Zifferndarstellung \& Realisierung
+		\item Ganze Zahlen variabler Länge
+	\end{itemize}
+	\item Rationale Zahlen ($\mathbb{Q}$)
+	\begin{itemize}
+		\item Konstruktion durch Abschluß von $\mathbb{Z}$ unter Division
+		\item Zifferndarstellung 
+		\item Dezimal- und Dualbrüche
+		\item Praktische Realisierung
+	\end{itemize}
+	\item Reelle Zahlen ($\mathbb{R}$)
+	\begin{itemize}
+		\item Konstruktion durch Vervollständigung von $\mathbb{Q}$
+		\item Abzählbarkeit und Zifferndarstellung
+		\item Absoluter und relativer Fehler
+		\item Konstruktion Gleitkommazahlen
+		\item Gleitkommazahlen und Rundungsfehler
+		\item Praktische Realisierung
+		\item Gleitkommaarithmetik
+	\end{itemize}
+\end{itemize}
 
 \begin{theorem}[Gauß Summe]
 
@@ -255,5 +313,9 @@ int main(int argc, char *argv[])
 \end{exercise}
 
 % End Example content
+
+\begin{appendix}
+\printbibliography
+\end{appendix}
 
 \end{document}

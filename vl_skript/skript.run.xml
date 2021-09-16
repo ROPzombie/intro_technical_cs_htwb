@@ -81,5 +81,8 @@
     <requires type="dynamic">
       <file>skript.bcf</file>
     </requires>
+    <requires type="editable">
+      <file>./sources.bib</file>
+    </requires>
   </external>
 </requests>
