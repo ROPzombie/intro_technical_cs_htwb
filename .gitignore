@@ -1,0 +1,16 @@
+*.log
+*.aux
+*.bbl
+*.blg
+*.out
+*.gz
+*.toc
+*.swp
+*.swrx
+*.pytxcode
+*.nav
+*.snm
+*.csv
+*.tsv
+solutions/
+question_pool/

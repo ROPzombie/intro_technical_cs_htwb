@@ -1,0 +1,271 @@
+\documentclass[xcolor=dvipsnames,aspectratio=169]{beamer}
+
+\usepackage{fontspec}
+\defaultfontfeatures{Ligatures=TeX}
+%\setsansfont{Liberation Sans}
+\usepackage{polyglossia}
+\setdefaultlanguage{german}
+
+\usetheme{Berlin}
+\usecolortheme[named=LimeGreen]{structure}
+\usepackage{beamerthemesplit} % kam neu dazu
+	
+\usepackage{amsmath}
+\usepackage{graphicx}
+\graphicspath{{pictures/}}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{caption}
+\usepackage{multimedia}
+\usepackage{tikz}
+\usepackage{listings}
+\usepackage{acronym}
+\usepackage{uhrzeit}
+\usepackage{lmodern}
+\usepackage{multicol}
+\usepackage{csquotes}
+
+
+\definecolor{pblue}{rgb}{0.13,0.13,1}
+\definecolor{pgreen}{rgb}{0,0.5,0}
+\definecolor{pred}{rgb}{0.9,0,0}
+\definecolor{pgrey}{rgb}{0.46,0.45,0.48}
+
+\newcounter{countitems}
+\newcounter{nextitemizecount}
+\newcommand{\setupcountitems}{%
+  \stepcounter{nextitemizecount}%
+  \setcounter{countitems}{0}%
+  \preto\item{\stepcounter{countitems}}%
+}
+\makeatletter
+\newcommand{\computecountitems}{%
+  \edef\@currentlabel{\number\c@countitems}%
+  \label{countitems@\number\numexpr\value{nextitemizecount}-1\relax}%
+}
+\newcommand{\nextitemizecount}{%
+  \getrefnumber{countitems@\number\c@nextitemizecount}%
+}
+\newcommand{\previtemizecount}{%
+  \getrefnumber{countitems@\number\numexpr\value{nextitemizecount}-1\relax}%
+}
+
+\makeatother    
+\newenvironment{AutoMultiColItemize}{%
+\ifnumcomp{\nextitemizecount}{>}{3}{\begin{multicols}{2}}{}%
+\setupcountitems\begin{itemize}}%
+{\end{itemize}%
+\unskip\computecountitems\ifnumcomp{\previtemizecount}{>}{3}{\end{multicols}}{}}
+
+\lstset{
+    escapeinside={(*}{*)}
+}
+
+\lstdefinestyle{Java}{
+  showspaces=false,
+  showtabs=false,
+  tabsize=2,
+  breaklines=true,
+  showstringspaces=false,
+  breakatwhitespace=true,
+  commentstyle=\color{pgreen},
+  keywordstyle=\color{pblue},
+  stringstyle=\color{pred},
+  basicstyle=\footnotesize\ttfamily,
+  numbers=left,
+  numberstyle=\tiny\color{gray}\ttfamily,
+  numbersep=7pt,
+  %moredelim=[il][\textcolor{pgrey}]{$$},
+  moredelim=[is][\textcolor{pgrey}]{\%\%}{\%\%},
+  captionpos=b
+}
+
+\lstdefinestyle{basic}{  
+  basicstyle=\footnotesize\ttfamily,
+  breaklines=true
+  numbers=left,
+  numberstyle=\tiny\color{gray}\ttfamily,
+  numbersep=7pt,
+  backgroundcolor=\color{white},
+  showspaces=false,
+  showstringspaces=false,
+  showtabs=false,
+  frame=single,
+  rulecolor=\color{black},
+  captionpos=b,
+  keywordstyle=\color{blue}\bf,
+  commentstyle=\color{gray},
+  stringstyle=\color{green},
+  keywordstyle={[2]\color{red}\bf},
+}
+
+
+\lstdefinelanguage{custom}
+{
+morekeywords={public, void},
+sensitive=false,
+morecomment=[l]{//},
+morecomment=[s]{/*}{*/},
+morestring=[b]",
+}
+
+
+\lstdefinestyle{BashInputStyle}{
+  language=bash,
+  showstringspaces=false,
+  basicstyle=\small\sffamily,
+  numbers=left,
+  numberstyle=\tiny,
+  numbersep=5pt,
+  frame=trlb,
+  columns=fullflexible,
+  backgroundcolor=\color{gray!20},
+  linewidth=0.9\linewidth,
+  xleftmargin=0.1\linewidth
+}
+
+%Logo in the upper right just change if you know what you are doing^^
+\addtobeamertemplate{frametitle}{}{%
+\begin{tikzpicture}[remember picture,overlay]
+\node[anchor=north east,yshift=2pt] at (current page.north east) {\includegraphics[height=1.8cm]{htw}};
+\end{tikzpicture}}
+
+\begin{document}
+\bibliographystyle{alpha}
+\title{Technische und logische Grundlagen der Informatik\\Wintersemester 2021/22}
+\subtitle{Organisatorisches\\
+
+\href{mailto:Benjamin.Troester@HTW-Berlin.de}{Benjamin.Troester@HTW-Berlin.de}\\
+		PGP: ADE1 3997 3D5D B25D 3F8F 0A51 A03A 3A24 978D D673 }
+
+\author{Benjamin Tröster}
+
+\date{}
+
+\begin{frame}
+\titlepage
+\end{frame}
+
+\section*{Road-Map}
+\begin{frame}
+\frametitle{Road-Map}
+\begin{multicols}{2}
+  \tableofcontents
+\end{multicols}
+\end{frame}
+
+\section{Disclamer}
+\begin{frame}
+	\frametitle{Disclamer I}
+	\begin{itemize}
+		\item Objektive Kritik ist immer willkommen!
+		\item Wenn sie Fehler oder Anmerkungen haben, tragen sie diese ruhig vor.
+		\item Sie wollen ehrliches Feedback genauso wie ich
+		\item Wenn Sie Anregungen, Verbesserungsvorschläge haben, nehme ich diese ebenfalls gerne an.
+	\end{itemize}
+\end{frame}
+
+\section{Organisatorisches}
+\subsection{Grundsätzliches}
+\begin{frame}
+	\frametitle{Grundsätzliches}
+	\begin{itemize}
+		\item Vorlesung: ab Oktober 2021 06.10.2021
+		\item (Mglw.: Meeting/Übung via Moodle: Telco-Plugin \emph{BigBlueButton (BBB)}
+		\item Vorlesungs \& Übungszeit $\Rightarrow$ LSF
+		\begin{itemize}
+			\item Beachten sie Gruppentermine für die Übungen im LSF
+		\end{itemize}
+		\item Skript, Übungsblätter, Folien, Literatur \& Links etc. $\Rightarrow$ \url{moodle.htw-berlin.de}
+		\item Übungen: Zweiwöchentlicher Tonus 
+		\item Erste Übung: 13.10.2021
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Klausur}
+		\begin{itemize}
+			\item Dieses Semester: Prüfung Wahrscheinlich im Klausurformat	
+			\begin{itemize}
+				\item Schriftlich
+				\item Dauer: 90 Minuten
+			\end{itemize}
+			\item Klausurinhalt: 50\% Übung, 50\% Vorlesung
+		\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Vorlesungsablauf}
+	\begin{itemize}
+		\item Beginn: Re­ka­pi­tu­la­ti­on \& Wiederholung wichtigster Inhalte letzten Vorlesung
+		\begin{itemize}
+			\item Stellen sie Frage!
+		\end{itemize}
+		\item Vorlesung Mischung aus Slides bzw. Tafel
+		\begin{itemize}
+			\item Skript: Allgemeine Zusammenfassung wesentlicher Inhalte
+			\item Folien: Visualisierung
+			\item Tafel: Praktische Beispiele, Erläuterungen
+		\end{itemize}
+		\item Umsetzung: Laboraufgaben
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Übungsablauf}
+	\begin{itemize}
+		\item Beginn mit Nachbesprechung letzter Übung:
+		\begin{itemize}
+			\item Grundsätzliche ihre \enquote{Show}, sie bestimmen hier den wesentlichen Lauf
+			\item Fragen aus den Hausaufgaben
+			\item Besprechung aktueller Übungszettel
+			\item Lösen von Aufgaben
+		\end{itemize}
+	\end{itemize}
+\end{frame}
+
+\subsection{ECTS}
+\begin{frame}
+	\frametitle{Arbeitsaufwand -- ECTS}
+	\begin{itemize}
+		\item Modul Netzwerke: 5 ECTS (European Credit Transfer System) -- manchmal auch LP/CP (Leistungspunkte)
+			\begin{itemize}
+				\item 1 ECTS $\widehat{=}$ 30h
+				\item Workload Netzwerke: 150h/Semester oder 37,5h/Monat oder $\sim$ 9,375h/Woche
+				\item 2 SWS \footnote{Semesterwochenstunden} VL + 2 SWS Übung $\rightarrow$ 4 SWS oder 3h
+				\item D.h. restlichen \textbf{6h/Woche}
+				\begin{itemize}
+					\item Vorbereitung \& Nachbereitung der Vorlesung
+					\item Hausaufgaben, Recherche...
+				\end{itemize}
+			\end{itemize}
+			\item Total Workload pro Semester: 30 CP $\widehat{=}$ 900h $\rightarrow$  $\sim$56.25/Woche
+	\end{itemize}
+\end{frame}
+
+\section{Motivation}
+\subsection{Studien- \& Prüfungsordnung AMB30/2012}
+\begin{frame}
+	\frametitle{B12 Technische und logische Grundlagen der Informatik}
+	Studien- \& Prüfungsordnung AMBl. 12/2021 S. 207\\
+	\begin{itemize}
+		\item Boolesche Algebra, Logikgatter, kombinatorische und sequentielle Schaltungen \& Schaltwerke
+		\item Zeichenkodierung, Zahlendarstellung und Rechenarithmetik,
+		\item Signale im Zeit und Frequenzbereich
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\frametitle{Nachdem sie das Modul erfolgreich absolviert haben, können die Studierenden:}
+	\vspace{-0.7cm}
+	\begin{itemize}
+		\item logischen Ausdrücke spezifizieren und vereinfachen, 
+		\item Bitweise Operatoren anwenden
+		\item Synchrone Automaten beschreiben und simulieren
+		\item Mit relevanten Verfahren zur Signalverarbeitung umgehen
+		\item Im Rahmen des Fachgebietes bekannte Vorgehen adaptieren und an neue Anforderungen anpasse
+		\item fachliche Fragestellungen verstehen und Lösungen vorschlagen. 
+	\end{itemize}
+\end{frame}
+
+\end{document}

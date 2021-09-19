@@ -1,0 +1,227 @@
+\documentclass[xcolor=dvipsnames,aspectratio=169]{beamer}
+
+\usepackage{fontspec}
+\defaultfontfeatures{Ligatures=TeX}
+%\setsansfont{Liberation Sans}
+\usepackage{polyglossia}
+\setdefaultlanguage{german}
+
+\usetheme{Berlin}
+\usecolortheme[named=LimeGreen]{structure}
+\usepackage{beamerthemesplit} % kam neu dazu
+	
+\usepackage{amsmath}
+\usepackage{graphicx}
+\graphicspath{{pictures/}}
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{caption}
+\usepackage{multimedia}
+\usepackage{tikz}
+\usepackage{listings}
+\usepackage{acronym}
+\usepackage{uhrzeit}
+\usepackage{lmodern}
+\usepackage{multicol}
+\usepackage{csquotes}
+\usepackage{pgfplots}
+
+\definecolor{pblue}{rgb}{0.13,0.13,1}
+\definecolor{pgreen}{rgb}{0,0.5,0}
+\definecolor{pred}{rgb}{0.9,0,0}
+\definecolor{pgrey}{rgb}{0.46,0.45,0.48}
+
+\newcounter{countitems}
+\newcounter{nextitemizecount}
+\newcommand{\setupcountitems}{%
+  \stepcounter{nextitemizecount}%
+  \setcounter{countitems}{0}%
+  \preto\item{\stepcounter{countitems}}%
+}
+\makeatletter
+\newcommand{\computecountitems}{%
+  \edef\@currentlabel{\number\c@countitems}%
+  \label{countitems@\number\numexpr\value{nextitemizecount}-1\relax}%
+}
+\newcommand{\nextitemizecount}{%
+  \getrefnumber{countitems@\number\c@nextitemizecount}%
+}
+\newcommand{\previtemizecount}{%
+  \getrefnumber{countitems@\number\numexpr\value{nextitemizecount}-1\relax}%
+}
+
+\makeatother    
+\newenvironment{AutoMultiColItemize}{%
+\ifnumcomp{\nextitemizecount}{>}{3}{\begin{multicols}{2}}{}%
+\setupcountitems\begin{itemize}}%
+{\end{itemize}%
+\unskip\computecountitems\ifnumcomp{\previtemizecount}{>}{3}{\end{multicols}}{}}
+
+\lstset{
+    escapeinside={(*}{*)}
+}
+
+\lstdefinestyle{Java}{
+  showspaces=false,
+  showtabs=false,
+  tabsize=2,
+  breaklines=true,
+  showstringspaces=false,
+  breakatwhitespace=true,
+  commentstyle=\color{pgreen},
+  keywordstyle=\color{pblue},
+  stringstyle=\color{pred},
+  basicstyle=\footnotesize\ttfamily,
+  numbers=left,
+  numberstyle=\tiny\color{gray}\ttfamily,
+  numbersep=7pt,
+  %moredelim=[il][\textcolor{pgrey}]{$$},
+  moredelim=[is][\textcolor{pgrey}]{\%\%}{\%\%},
+  captionpos=b
+}
+
+\lstdefinestyle{basic}{  
+  basicstyle=\footnotesize\ttfamily,
+  breaklines=true
+  numbers=left,
+  numberstyle=\tiny\color{gray}\ttfamily,
+  numbersep=7pt,
+  backgroundcolor=\color{white},
+  showspaces=false,
+  showstringspaces=false,
+  showtabs=false,
+  frame=single,
+  rulecolor=\color{black},
+  captionpos=b,
+  keywordstyle=\color{blue}\bf,
+  commentstyle=\color{gray},
+  stringstyle=\color{green},
+  keywordstyle={[2]\color{red}\bf},
+}
+
+
+\lstdefinelanguage{custom}
+{
+morekeywords={public, void},
+sensitive=false,
+morecomment=[l]{//},
+morecomment=[s]{/*}{*/},
+morestring=[b]",
+}
+
+
+\lstdefinestyle{BashInputStyle}{
+  language=bash,
+  showstringspaces=false,
+  basicstyle=\small\sffamily,
+  numbers=left,
+  numberstyle=\tiny,
+  numbersep=5pt,
+  frame=trlb,
+  columns=fullflexible,
+  backgroundcolor=\color{gray!20},
+  linewidth=0.9\linewidth,
+  xleftmargin=0.1\linewidth
+}
+
+   \pgfplotsset{
+    standard/.style={%Axis format configuration
+        axis x line=middle,
+        axis y line=middle,
+        enlarge x limits=0.15,
+        enlarge y limits=0.15,
+        every axis x label/.style={at={(current axis.right of origin)},anchor=north west},
+        every axis y label/.style={at={(current axis.above origin)},anchor=north east},
+        every axis plot post/.style={mark options={fill=white}}
+        }
+    }
+    
+
+%Logo in the upper right just change if you know what you are doing^^
+\addtobeamertemplate{frametitle}{}{%
+\begin{tikzpicture}[remember picture,overlay]
+\node[anchor=north east,yshift=2pt] at (current page.north east) {\includegraphics[height=1.8cm]{htw}};
+\end{tikzpicture}}
+
+\begin{document}
+\bibliographystyle{alpha}
+\title{Technische und logische Grundlagen der Informatik\\Wintersemester 2021/22}
+\subtitle{Signale im Zeit und Frequenzbereich\\
+
+\href{mailto:Benjamin.Troester@HTW-Berlin.de}{Benjamin.Troester@HTW-Berlin.de}\\
+		PGP: ADE1 3997 3D5D B25D 3F8F 0A51 A03A 3A24 978D D673 }
+
+\author{Benjamin Tröster}
+
+\date{}
+
+\begin{frame}
+\titlepage
+\end{frame}
+
+\section*{Road-Map}
+\begin{frame}
+\frametitle{Road-Map}
+\begin{multicols}{2}
+  \tableofcontents
+\end{multicols}
+\end{frame}
+
+\section{Illustratives Beispiel}
+
+\begin{frame}
+	\begin{itemize}
+		\item Signal ist die physische Repräsentation der Daten
+	\end{itemize}
+\end{frame}
+
+\section{Digital vs. Analog}
+
+\begin{frame}{Digital vs. Analog}
+Signal ist die physische Repräsentation der Daten
+\begin{columns}[T] % align columns
+\begin{column}{.48\textwidth}
+\begin{itemize}
+		\item Analog:\\
+		\begin{tikzpicture}
+  \begin{axis}%
+    [grid=both,
+     minor tick num=4,
+     grid style={line width=.1pt, draw=gray!10},
+     major grid style={line width=.2pt,draw=gray!50},
+     axis lines=middle,
+     enlargelimits={abs=0.2}
+    ]
+    \addplot[domain=-0:3,samples=50,smooth,red] {sin(deg(pi*x))};
+  \end{axis}
+\end{tikzpicture}
+	\end{itemize} 
+\end{column}%
+\hfill%
+\begin{column}{.48\textwidth}
+\begin{itemize}
+	\item Digital:\\
+\begin{tikzpicture}
+            \begin{axis}[%
+            grid=both,
+     minor tick num=4,
+     grid style={line width=.1pt, draw=gray!10},
+     major grid style={line width=.2pt,draw=gray!50},
+     axis lines=middle,
+     enlargelimits={abs=0.2},
+                standard,
+                domain = 0:3,
+                samples = 16,
+                xlabel={$n$},
+                ylabel={$x[n]$}]
+                \addplot+[ycomb,black,thick] {sin(deg(pi*x))};
+            \end{axis}
+        \end{tikzpicture}
+        \end{itemize}
+\end{column}%
+\end{columns}
+\end{frame}
+
+
+
+\end{document}
