@@ -15,7 +15,7 @@
        * Universelle Operatoren
        * Wahrheitstabellen
        * De Morgan
-     * Logikgatterg
+     * Logikgatter
        * Transistor (nMOS/pMOS) - Realisierung boolscher Funktionen
        * Gatter
          * Operatoren & Notation
