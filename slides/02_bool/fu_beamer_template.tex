@@ -1,0 +1,137 @@
+% Alternative template for talks of the Freie Universität Berlin.
+% Created by Leonard R. König, <leonard.koenig@fu-berlin.de> following the
+% guidelines on www.fu-berlin.de/cd
+%
+% (c) Leonard König, CC BY 4.0
+%
+% This template was written against UTF-8 capable LaTeX engines, specifically
+% LuaLaTeX.
+
+% Trying to get rather close to the ppt/odp template:
+%  http://www.fu-berlin.de/sites/cd/downloads_container/PowerPoint_Praesentation_Anleitung.pdf
+
+%%% font styles
+\setbeamerfont{frametitle}{series=\bfseries}
+\setbeamerfont{footline}{series=\bfseries}
+\setbeamerfont{headline}{series=\bfseries}
+\setbeamerfont{alerted text}{series=\bfseries}
+%%%
+
+% colordefs
+\definecolor{fu_darkblue}{RGB}{0,51,102}
+\definecolor{fu_seablue}{RGB}{0,102,204}
+\definecolor{fu_lightblue}{RGB}{204,214,224}
+\definecolor{fu_green}{RGB}{153,204,0}
+\definecolor{fu_lightgrey}{RGB}{128,128,128}
+\definecolor{fu_grey}{RGB}{95,95,95}
+%
+\definecolor{fu_red}{RGB}{204, 0, 0} % red text (used by \alert)
+%%% end colordefs
+
+%%% colors
+\setbeamercolor*{title}{fg=fu_darkblue}
+\setbeamercolor*{subtitle}{fg=fu_seablue}
+\setbeamercolor*{frametitle}{fg=fu_darkblue}
+\setbeamercolor*{footline}{fg=fu_grey,bg=fu_lightblue}
+\setbeamercolor*{headline}{fg=fu_grey}
+
+\setbeamercolor*{normal text}{fg=black}
+\setbeamercolor*{alerted text}{fg=fu_red}
+\setbeamercolor*{example text}{fg=fu_green}
+\setbeamercolor*{structure}{fg=fu_darkblue}
+
+\setbeamercolor*{block title}{fg=white,bg=black!50}
+\setbeamercolor*{block title alerted}{fg=white,bg=black!50}
+\setbeamercolor*{block title example}{fg=white,bg=black!50}
+
+\setbeamercolor*{block body}{bg=black!10}
+\setbeamercolor*{block body alerted}{bg=black!10}
+\setbeamercolor*{block body example}{bg=black!10}
+
+\setbeamercolor{bibliography entry author}{fg=fu_darkblue}
+
+\setbeamercolor{item}{fg=fu_darkblue}
+\setbeamercolor{navigation symbols}{fg=fu_lightgrey,bg=fu_grey}
+%%% end colors
+
+%%% title page
+% Display logo (if exists) and right next to it, put our title + subtitle
+\defbeamertemplate*{title page}{fu_titlepage}
+{%
+	\hskip .3\textheight
+	\begin{minipage}[.4\textheight]{\textwidth}
+		\begin{minipage}[.4\textheight]{0.25\textwidth}
+			\inserttitlegraphic
+		\end{minipage}%
+		\begin{minipage}[.4\textheight]{0.75\textwidth}
+			\begin{beamercolorbox}{title}
+				\usebeamerfont{title}\inserttitle\par%
+			\end{beamercolorbox}
+			\vfill
+			\ifx\insertsubtitle
+				\@empty%
+			\else
+				\begin{beamercolorbox}{subtitle}
+					\usebeamerfont{subtitle}\insertsubtitle\par
+				\end{beamercolorbox}
+			\fi
+		\end{minipage}
+	\end{minipage}%
+	\hskip .3\textheight
+}
+%%% end title page
+
+%%% headline
+% display title, author and institute on the left;
+% logo on the right.
+\newcommand{\headlinetext}
+{%
+	\inserttitle\\[0.3em]%
+	\insertauthor, %
+	\insertshortinstitute
+}
+\newlength{\headlinewidth}
+\setlength{\headlinewidth}{\paperwidth}
+\addtolength{\headlinewidth}{-2\marginparsep}
+\setbeamertemplate{headline}
+{%
+	\begin{beamercolorbox}[wd=\paperwidth]{headline}%
+		\vskip5pt
+		{\hspace*{\marginparsep}}%
+		\parbox{.5\headlinewidth}
+		{%
+			\usebeamertemplate{title in head/foot}%
+			\headlinetext%
+		}%
+		\begin{minipage}{.5\headlinewidth}%
+			\hfill\usebeamertemplate*{logo}
+		\end{minipage}%
+		{\hspace*{\marginparsep}}%
+	\end{beamercolorbox}%
+}
+%%% end headline
+
+%%% footline
+% title + date on the left, frame number on the right
+\newcommand{\footlinetext}
+{%
+	\usebeamerfont{shorttitle}\insertshorttitle, %
+	\usebeamerfont{shortdate}\insertshortdate
+}
+\setbeamertemplate{footline}
+{%
+	\begin{beamercolorbox}{footline}
+		\vskip2pt
+		\hspace{\marginparsep}%
+		\footlinetext\hfill%
+		\insertframenumber%
+		\hspace{\marginparsep}
+		\vskip2pt
+	\end{beamercolorbox}%
+}
+%%% end footline
+
+% don't use default templates for sidebars
+\setbeamertemplate{sidebar right}{}
+\setbeamertemplate{sidebar left}{}
+\setbeamertemplate{title page}[fu_titlepage]
