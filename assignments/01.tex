@@ -86,11 +86,13 @@
 \textsc{Übungsblatt 01}
 }
 \begin{document}
+\vspace*{-1cm}
 \begin{center}
 \Large{\textbf{Übungsblatt 1}}
 \end{center}
-
-\begin{center}\Large{\textbf{Aufgabe A -- Bool'sche Algebra}}\end{center}\vskip0.25in
+\vspace*{-1cm}
+\begin{center}\Large{\textbf{Aufgabe A -- Bool'sche Algebra}}\end{center}
+\vspace*{-.8cm}
 \begin{enumerate}
 	\item In der Schaltalgebra gelten die folgenden alternativen Absorptionsgesetze:
 	\begin{align*}
@@ -120,6 +122,7 @@
 		\Phi &= x \land y  \lor \neg ((x \lor \neg y) \land y)\\
 		\Psi &= \neg (x \land y) \lor x \lor y
 	\end{align*}
+	Tautologien sind, indem sie
 	\begin{enumerate}
 		\item für beide Funktionen eine Wahrheitstafel aufstellen,
 		\item den Beweis durch algebraische Umformung führen.
@@ -131,13 +134,13 @@
 		+ 			& := ggT \text{(größter gemeinsamer Teiler)}
 	\end{align*}	
 	eine boolesche Algebra?
-	\item Vereinfachen sie die folgenden booleschen Ausdrücke so weit wie möglich durch die Anwendung der algebraischen Umformungsregeln.
+	\item Vereinfachen sie die folgenden bool'schen Ausdrücke so weit wie möglich durch die Anwendung der algebraischen Umformungsregeln.
 	\begin{enumerate}
-		\item $ x_1 \overline{x_2 x_3 x_4} \lor x_1 x2 \overline{x_3 x_4} \lor x_1 x_2 \overline{x_3} x_4 \lor x_1 \overline{x_2 x_3} x_4 \lor \overline{x_1} x_2 \overline{x_3 x_4} \lor x_1 x_2 x_3 \overline{x_4} \lor \overline{x_1} x_2 x_3 \overline{x_4}$
+		\item $ x_1 \overline{x_2 x_3 x_4} \lor x_1 x_2 \overline{x_3 x_4} \lor x_1 x_2 \overline{x_3} x_4 \lor x_1 \overline{x_2 x_3} x_4 \lor \overline{x_1} x_2 \overline{x_3 x_4} \lor x_1 x_2 x_3 \overline{x_4} \lor overline{x_1} x_2 x_3 \overline{x_4}$
 	\end{enumerate}
-	\item Zeigen oder widerlegen sie die folgende Beziehung zwischen den Operatoren $\Leftrightarrow$ und $\neg \Leftrightarrow$:
+	\item Zeigen oder widerlegen sie die folgende Beziehung zwischen den Operatoren $\Leftrightarrow$ und $\not\Leftrightarrow$:
 	\begin{enumerate}
-		\item $x \Leftrightarrow y \Leftrightarrow z = x \neg \Leftrightarrow y \neg \Leftrightarrow z$
+		\item $x \Leftrightarrow y \Leftrightarrow z = x \not\Leftrightarrow y \not\Leftrightarrow z$
 	\end{enumerate}
 	\item Zeigen sie, dass die folgenden Varianten des Distributivgesetzes für $\Leftrightarrow$ und $\neg \Leftrightarrow$ falsch sind:
 	\begin{enumerate}[resume]
@@ -149,15 +152,14 @@
 		\item $\overline{x_1 \land x_2 \land \ldots \land x_n} = \overline{x_1} \lor \overline{x_2} \lor \ldots \lor \overline{x_n}$
 		\item $\overline{x_1 \lor x_2 \lor \ldots \lor x_n} = \overline{x_1} \land \overline{x_2} \land \ldots \land \overline{x_n}$
 	\end{enumerate}
-	\item Gegeben seien die folgenden drei booleschen Funktionen:
+	\item Gegeben seien die folgenden drei bool'schen Funktionen:
 	\begin{enumerate}
 		\item $\varphi_1 := (x \Rightarrow y) \Rightarrow z$
 		\item $\varphi_2 := x \Rightarrow (y \Rightarrow z)$
 		\item $\varphi_3 := \overline{x \land y} \lor \overline{x \land \overline{z}}$
 	\end{enumerate}
-	Stellen sie $\varphi_1$ unter ausschließlicher Verwendung der NOR-Funktion, $\varphi_2$ unter ausschließli
-cher Verwendung der NAND-Funktion und $\varphi_3$ unter ausschließlicher Verwendung der Implikation dar.
-	\item Zeigen sie unter Anwendung der Regeln der booleschen Algebra, dass mit einer Kombination von $\uparrow$ ( = NAND) die folgende \textbf{einstelligen} Funktionen dargestellt werden können:
+	Stellen sie $\varphi_1$ unter ausschließlicher Verwendung der NOR-Funktion, $\varphi_2$ unter ausschließlicher Verwendung der NAND-Funktion und $\varphi_3$ unter ausschließlicher Verwendung der Implikation dar.
+	\item Zeigen sie unter Anwendung der Regeln der bool'schen Algebra, dass mit einer Kombination von $\uparrow$ ( = NAND) die folgende \textbf{einstelligen} Funktionen dargestellt werden können:
 	\begin{enumerate}
 		\item $\neg $
 		\item $ \id()$
@@ -177,7 +179,7 @@ cher Verwendung der NAND-Funktion und $\varphi_3$ unter ausschließlicher Verwen
 		\item $\lor$
 		\item $\oplus$
 	\end{enumerate}
-	nicht universell ist. D.h. es gibt wenigstens eine boolesche Funktion, die durch keine Kombination allein der jeweiligen Operationen dargestellt werden kann. 
+	nicht universell ist. D.h. es gibt wenigstens eine bool'sche Funktion, die durch keine Kombination allein der jeweiligen Operationen dargestellt werden kann. 
 \end{enumerate}
 	
 \end{document}
