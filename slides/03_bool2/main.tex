@@ -1,0 +1,337 @@
+\documentclass[12pt%
+%,draft%
+,aspectratio=169%
+]{beamer}
+%
+\usepackage{fontspec}
+\defaultfontfeatures{Ligatures=TeX}
+%\setsansfont{Liberation Sans}
+\usepackage{polyglossia}
+\setdefaultlanguage{ngerman}
+\include{fu_beamer_template}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+%\usepackage{algorithmic}
+\usepackage{tikz}
+\usetikzlibrary{arrows,shapes,automata,petri,positioning,calc}
+\usepackage{graphicx}
+\usepackage{subfig}
+\usepackage{pgfplots}
+\usepackage{venndiagram}
+\usepackage{ stmaryrd }
+
+
+
+\pgfplotsset{
+    standard/.style={%Axis format configuration
+        axis x line=middle,
+        axis y line=middle,
+        enlarge x limits=0.15,
+        enlarge y limits=0.15,
+        every axis x label/.style={at={(current axis.right of origin)},anchor=north west},
+        every axis y label/.style={at={(current axis.above origin)},anchor=north east},
+        every axis plot post/.style={mark options={fill=white}}
+        }
+    }
+
+
+\author{Benjamin Tröster}
+\title[Bool'sche Algebra]{Bool'sche Algebra}
+%\subtitle[Markov Models]{...}
+%\pgfdeclareimage{titlegraphic}{../res/dwarf_logo2.png}
+%\titlegraphic{\pgfuseimage{titlegraphic}}
+%\date{}
+%\subject{}
+%
+% FU settings
+\institute[HTW Berlin]{Hochschule für Technik und Wirtschaft Berlin}
+%\pgfdeclareimage[height=0.9cm]{logo}{../res/dwarf_logo}
+%\logo{\pgfuseimage{logo}}
+%
+\usepackage[
+backend=biber,
+citestyle=alphabetic,bibstyle=authoryear
+]{biblatex}
+\addbibresource{sources.bib}
+
+
+\begin{document}
+
+\begin{frame}
+\titlepage
+\end{frame}
+
+\begin{frame}{Fahrplan}
+\tableofcontents[hideothersubsections]
+\end{frame}
+
+\section{Recap}
+\begin{frame}{Aussagenlogik}
+\begin{definition}[Aussagenlogik]
+\textbf{Aussagenlogik}, als Teilgebiet der Logik, befasst sich mit Aussagen und der Verknüpfung von Aussagen mittels \textit{Junktoren}.
+\end{definition}
+\begin{itemize}
+	\item Junktoren sind logische Verknüpfungen
+	\item Klassische Junktoren:
+	\begin{itemize}
+		\item Negation $\neg P$ 
+		\item Implikation/Subjunktion/Konditional $P\Rightarrow Q$
+		\item Äquivalenz/Bikonditional/Bisubjunktion $P\Leftrightarrow Q$
+		\item Konjunktion $P\land Q$
+		\item Disjunktion $P\lor Q$
+	\end{itemize}
+\end{itemize}
+\cite{rautenberg2002einfuhrung}
+\end{frame}
+
+\begin{frame}{Bool'sche Algebra nach Huntington (\textbf{Wichtig!})}
+\begin{definition}
+Die bool'sche Algebra nach Huntington ist definiert als Menge $\mathcal{V}: \{0,1\}$ mit den Verknüpfungen $\cdot (\land), + (\lor)$, sodass $\mathcal{V} \times \mathcal{V} \to \mathcal{V}$, also $\{0,1\} \times \{0,1\} \to \{0,1\}$. 
+\end{definition}
+\begin{itemize}
+	\item Kommutativgesetze (K): $a \cdot b = b \cdot a$ bzw. $a + b = b + a$
+	\item Distributivgesetze (D): $a \cdot (b + c) = (a \cdot b) + (a \cdot c)$ bzw. $a + (b \cdot c) = (a + b) \cdot (a + c)$
+	\item Neutrale Elemente (N): $ \exists e, n \in \mathcal{V}$ mit  $a \cdot e = a$ und $a + n = a$
+	\item Inverse Elemente (I): $\forall a \in \mathcal{V}$ existiert ein $a'$ mit $a \cdot a'= n$ und $a + a' = e$
+\end{itemize}
+Übernommen von \cite{barnett2013boolean} bzw. \cite{hoffmann2020grundlagen}
+\end{frame}
+
+\begin{frame}{Darstellungen \& Bool'sche Funktionen}
+\begin{itemize}
+	\item Wahrheitstabelle
+	\begin{center}
+\begin{table}[]
+\begin{tabular}{|c|c|c|ll}
+\cline{1-3}
+$a$ & $b$ & $a \Rightarrow b$ &  &  \\ \cline{1-3}
+0 & 0 & 1 &  &  \\ \cline{1-3}
+0 & 1 & 1 &  &  \\ \cline{1-3}
+1 & 0 & 0 &  &  \\ \cline{1-3}
+1 & 1 & 1 &  &  \\ \cline{1-3}
+\end{tabular}
+\end{table}
+\end{center}
+	\item 
+	\resizebox{5cm}{!}{%
+\begin{tikzpicture}[>=stealth',auto,shorten >=1pt]
+    \node [place] (tlor) {$\lor$};
+    
+    \node [place] (llor) [below left=of tlor] {$\land$};
+	\node [place] (rlor) [below right=of tlor] {$\land$};
+	\node [place] (b0) [below left=of llor] {$0$};
+	\node [place] (bx) [below =of llor] {$x$};
+	
+	\node [place] (b1) [below =of rlor] {$1$};
+	\node [place] (bx2) [below right=of rlor] {$x$};
+
+	\path[-] (tlor) edge node [left] {}  (llor);
+	\path[-] (tlor) edge node [left] {}  (rlor);
+	\path[-] (llor) edge node [left] {}  (b0);
+	\path[-] (llor) edge node [left] {}  (bx);
+	\path[-] (rlor) edge node [left] {}  (b1);
+	\path[-] (rlor) edge node [left] {}  (bx2);
+
+\end{tikzpicture}
+}
+	\item Algebraische Darstellung: $y = ((0 \land x) \lor (1 \lor x))$
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Notation und Operatorenbindung}
+\begin{itemize}
+	\item Syntactic Sugar (Ableitungen aus Basisverknüpfungen)
+	\begin{itemize}
+		\item $(a \Rightarrow b)$ für $(\neg a \lor b)$ -- Implikation
+		\item $(a \Leftarrow b)$ für $(b \Rightarrow a)$ -- Inversion der Implikation
+		\item $(a \Leftrightarrow b)$ für $(a \Rightarrow b) \land (a \Leftarrow b)$ -- Äquivalenz
+		\item $(a \oplus b)  für ¬(a \Leftrightarrow b$ -- Antivalenz oder Exklusiv-ODER/XOR
+		\item $\neg(a \lor b)$ -- NOR
+		\item $\neg (a \land b)$ -- NAND
+	\end{itemize}
+	\item Bindung der Operatoren 
+	\begin{itemize}
+		\item $\land$ bindet stärker als $\lor$
+		\item $\neg$ bindet stärker als $\land$
+	\end{itemize}
+	\item Klammerung
+	\begin{itemize}
+		\item Gleiche Verknüpfungen: linksassoziativ zusammengefasst
+	\end{itemize}
+\end{itemize}	 
+\end{frame}
+
+\begin{frame}{Beispiel}
+\begin{align*}
+Y &= (A \lor B) \land (\neg A \lor B) \land (A \lor \neg B)
+\end{align*}
+\end{frame}
+
+\begin{frame}{Beispiel}
+\begin{align*}
+Y &= (A \lor B) \land (\neg A \lor B) \land (A \lor \neg B)\\
+Y &= (\neg a \land \neg b) \lor (a \land b)
+\end{align*}
+\end{frame}
+
+
+\section{Einleitung}
+\begin{frame}{}
+\begin{itemize}
+	\item Erfüllbarkeit \& Äquivalenz
+	\item De Morgan Regeln
+	\item Universelle Operatoren
+	\item Beweisstrategien \& Induktion -- Strukturelle Induktion
+	\item Dualitätsprinzip
+	\item Normalformen
+	\item Bitweise logische Operationen, Bit-Maskierung
+	\item Einführung Logikgatter
+\end{itemize}
+\end{frame}
+
+\section{Erfüllbarkeit \& Äquivalenz}
+\begin{frame}{Erfüllbarkeit}
+	\begin{definition}[Erfüllbarkeit]
+		Sei $\varphi$ ein beliebiger boolescher Ausdruck. $\varphi$ heißt
+		\begin{itemize}
+			\item erfüllbar, wenn es Werte $x_1, \ldots, x_n$ gibt, mit $\varphi (x_1, \ldots, x_n ) = 1$.
+			\item widerlegbar, wenn es Werte $x_1, \ldots, x_n$ gibt, mit $\varphi (x_1, \ldots, x_n) = 0$.
+			\item unerfüllbar, wenn $\varphi (x_1 ,\ldots , x_n )$ immer gleich $0$ ist.
+			\item allgemeingültig, wenn wenn $\varphi (x_1 ,\ldots , x_n )$ immer gleich $1$ ist.
+		\end{itemize}
+		Einen allgemeingültigen Ausdruck bezeichnen wir auch als \textbf{Tautologie}.
+	\end{definition}
+\end{frame}
+
+\begin{frame}{Erfüllbarkeit/Unerfüllbar/Allgemeingültig}
+\begin{itemize}
+	\item $\phi = \neg x$
+	\item $\phi = x \land \neg x$
+	\item $\neg (x \land \neg x)$
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Äquivalenz}
+\begin{definition}[Äquivalenz]
+Zwei bool'sche Ausdrücke $\varphi$ und $\psi$ sind äquivalent, falls sie dieselbe Funktion repräsentieren. In anderen Worten: $\varphi und \psi$ sind genau dann äquivalent, wenn für alle Variablenbelegungen $x_1 , \ldots, x_n$ die folgende Beziehung gilt:
+$$ \varphi (x_1,\ldots, x_n) = \psi(x_1, \ldots, x_n)$$
+\end{definition}
+D.h. Zwei bool'sche Ausdrücke $\phi$ und $\psi$ sind genau dann äquivalent, wenn der Ausdruck $\varphi \Leftrightarrow \psi$ eine Tautologie ist.\\
+Mithilfe von Wahrheitstafeln, algebraischer Umformung oder durch erzeugen einer Normalform können wir die Äquivalenz feststellen.
+\end{frame}
+
+\section{Beweisstrategien}
+\begin{frame}{Beweisstrategien}
+\begin{itemize}
+	\item Direkter Beweis
+	\begin{itemize}
+		\item Annahme: $A$ ist allgemeingültig, durch richtiges Schließen: $A \Rightarrow B$
+	\end{itemize}
+	\item Indirekter Beweis:
+	\begin{itemize}
+		\item Annahme das Aussage korrekt, durch Negation der Annahme muss der Schluss falsch sein
+	\end{itemize}
+	\item Vollständige Induktion
+	\begin{itemize}
+		\item Beweise für Aussagen über die natürlichen Zahlen $\mathbb{N}$
+		\item Basierend auf den Peano-Axiomen für $\mathbb{N}$
+	\end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Beweisregeln}
+\begin{itemize}
+	\item Abtrennungsregel
+	\item Fallunterscheidung
+	\item Kettenschluss
+	\item Indirekter Beweis
+	\begin{itemize}
+		\item Sind $A \Rightarrow B$ und $A \Rightarrow \neg B$ allgemeingültig, so ist $\neg A$ allgemeingültig
+		\item Korrektheit folgt aus der Allgemeingültigkeit von $((A \Rightarrow B) \land (A \Rightarrow (\neg B))) \Rightarrow (\neg A)$
+	\end{itemize}
+	\item Kontraposition:  Ist $A \Rightarrow B$ allgemeingültig, so ist $(\neg B) \Rightarrow (\neg A)$ allgemeingültig
+	\begin{itemize}
+		\item Korrektheit folgt aus der Allgemeingültigkeit von $(A \Rightarrow B) \Rightarrow ((\neg B) \Rightarrow (\neg A))$.
+	\end{itemize}
+\end{itemize}
+\end{frame}
+
+\subsection{Vollständige Induktion}
+\begin{frame}{Vollständige Induktion}
+\begin{itemize}
+	\item Drei Teile: 
+	\begin{itemize}
+		\item Induktionsanfang (IA) \& Induktionsannahme
+		\item Induktionsschritt (IS)
+		\item Induktionsschluss
+	\end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Beispiel: Vollständige Induktion}
+\begin{theorem}
+$$\forall n (n \in \mathbb{N}_0 \rightarrow 2^0 + 2^1 + \dots 2^n = 2^{n+1}-1)$$
+\end{theorem}
+\end{frame}
+
+\begin{frame}
+\begin{proof}
+Prädikat: $\varphi(n) \equiv (2^0 + 2^1 + \dots 2^n = 2^{n+1}-1)$
+\begin{enumerate}
+	\item Induktionsanfang (IA): $\varphi(0)$ soll gelten
+$2^0 = 2^{0+1}-1 \Leftrightarrow 1 = 1 \surd$\\
+	\item Induktionsschritt (IS):
+\begin{align*}
+\varphi(n) & \Rightarrow \varphi(n^+)\\
+2^0 + 2^1 + \dots 2^n + 2^{n+1} &= 2^{(n+1)+1}-1\\
+\textbf{Anm.: } 2^0 + 2^1 + \dots 2^n &= 2^{n+1} -1  \\
+\Leftrightarrow  2^{n+1} -1 + 2^{n+1} &= 2^{(n+1)+1}-1\\
+\textbf{Anm.: } a^n + a^m &= 2^{n+m}\\
+\Leftrightarrow  2^{n+2} -1 &= 2^{(n+2)}-1 \surd
+\end{align*}
+\end{enumerate}
+\end{proof}
+\end{frame}
+
+\begin{frame}
+\begin{proof}
+Prädikat: $\varphi(n) \equiv (2^0 + 2^1 + \dots 2^n = 2^{n+1}-1)$
+\begin{enumerate}
+	\item Induktionsanfang: $\varphi(0)$ soll gelten
+$2^0 = 2^{0+1}-1 \Leftrightarrow 1 = 1 \surd$\\
+	\item Induktionsschritt:
+\begin{align*}
+\varphi(n) & \Rightarrow \varphi(n^+)\\
+2^0 + 2^1 + \dots 2^n + 2^{n+1} &= 2^{(n+1)+1}-1\\
+\Leftrightarrow  2^{n+1} -1 + 2^{n+1} &= 2^{(n+1)+1}-1\\
+\Leftrightarrow  2^{n+2} -1 &= 2^{(n+2)}-1 \surd
+\end{align*}
+	\item Induktionsschluss:
+$$\text{nach IA und IS } \Rightarrow \varphi(n) (\forall n(\varphi(n)))$$
+\end{enumerate}
+\end{proof}
+\end{frame}
+
+\subsection{Strukturelle Induktion}
+\begin{frame}{Strukturelle Induktion}
+\begin{itemize}
+	\item Vollständige Induktion ist eine Spezialfall der strukturellen Induktion
+\end{itemize}
+\end{frame}
+
+
+
+
+
+
+\section*{Quellen}
+\appendix
+\begin{frame}[allowframebreaks]
+  \frametitle<presentation>{Quellen}
+\printbibliography
+\end{frame}
+\end{document}

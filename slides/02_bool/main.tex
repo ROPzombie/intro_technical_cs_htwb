@@ -22,6 +22,7 @@
 \usepackage{subfig}
 \usepackage{pgfplots}
 \usepackage{venndiagram}
+\usepackage{ stmaryrd }
 
 
 
@@ -444,6 +445,28 @@ Die bool'sche Algebra nach Huntington ist definiert als Menge $\mathcal{V}: \{0,
 Übernommen von \cite{barnett2013boolean} bzw. \cite{hoffmann2020grundlagen}
 \end{frame}
 
+\begin{frame}{$\mathbb{R}$ als bool'sche Algebra nach Huntington?}
+	\begin{itemize}[<+->]
+	\item Gelten die Kommutativgesetze in $\mathbb{R}$ bzgl. $\cdot, +$?
+	\begin{itemize}
+		\item $a \cdot b = b \cdot a$ bzw. $a + b = b + a$
+	\end{itemize}
+	\item Gibt es ein neutrales Element bzgl. $\cdot, +$?
+	\begin{itemize}
+		\item $ \exists e, n \in \mathcal{V}$ mit  $a \cdot e = a$ und $a + n = a$
+	\end{itemize}
+	\item Gibt es zu jedem Element $e \in \mathbb{R}$ ein inverses Element $i \in \mathbb{R}$
+	\begin{itemize}
+		\item $\forall a \in \mathcal{V}$ existiert ein $a'$ mit $a \cdot a'= n$ und $a + a' = e$
+	\end{itemize}
+	\item Gelten die Distributivgesetzein $\mathbb{R}$ bzgl. $\cdot, +$?
+	\begin{itemize}
+		\item $a \cdot (b + c) = (a \cdot b) + (a \cdot c)$
+		\item $a + (b \cdot c) = (a + b) \cdot (a + c) \text{\lightning}$
+	\end{itemize}
+\end{itemize}
+\end{frame}
+
 \begin{frame}{Bool'sche Algebra als Verband (Lattice)}
 \begin{definition}
 Es kann eine bool'sche Algebra mit den Verknüpfungen $\land, \lor, \neg$ und den Elementen $0,1$ als distributiver, komplementärer Verband definiert werden. Zusätzlich ist eine partielle Halbordnung $a \leq b \Leftarrow a = a \land b$ definiert. So haben zwei Elemente ein Supremum und ein Infimum.
@@ -459,10 +482,10 @@ Es kann eine bool'sche Algebra mit den Verknüpfungen $\land, \lor, \neg$ und de
 \end{frame}
 
 \subsection{Darstellungen}
-\begin{frame}{Darstellungen}
+\begin{frame}{Darstellungen \& Bool'sche Funktionen}
 \begin{itemize}
 	\item Wahrheitstabelle (s.o.)
-	\item Via Graph $y = ((0 \land x) ∨ (1 \lor x))$\\
+	\item Via Graph $y = ((0 \land x) \lor (1 \lor x))$\\
 	\resizebox{5cm}{!}{%
 \begin{tikzpicture}[>=stealth',auto,shorten >=1pt]
     \node [place] (tlor) {$\lor$};
@@ -547,10 +570,10 @@ $\mathcal{V}$ & $\{0,1\}$ & Wahrheitswerte (TRUE, FALSE) \\
 	\begin{tabular}{ccc}
 $\mathcal{V}$ & $\mathcal{P}(T)$ & Potenzmenge der Trägermenge T \\
 	$\cdot$ & $\cap$ & Durchschnitt \\
-	$+$ & $\cup$ & Leere Menge \\
-	$n$ & $\emptyset$ & Falsch (FALSE)\\
+	$+$ & $\cup$ & Vereinigung\\
+	$n$ & $\emptyset$ & leere Menge\\
 	$e$ & $\mathcal{T}$ &  Trägermenge\\
-	$a'$ & $\mathcal{T} \setminus A$ & Komplementärmenge\\
+	$a'$ & $\mathcal{T} \setminus$ & Komplementärmenge\\
 \end{tabular}
 \end{table}
 \end{center}
@@ -558,18 +581,17 @@ $\mathcal{V}$ & $\mathcal{P}(T)$ & Potenzmenge der Trägermenge T \\
 \end{frame}
 
 \begin{frame}{Mengenalgebra}
+\begin{figure}
+	\center
+	\includegraphics[scale=0.4]{pictures/menge1}
+\end{figure}
+\end{frame}
 
-	\begin{center}
-\begin{venndiagram2sets}
-       \fillNotA
-\end{venndiagram2sets}
-\begin{venndiagram2sets}
-       \fillA \fillB
-\end{venndiagram2sets}
-\begin{venndiagram2sets}
-       \fillACapB
-\end{venndiagram2sets}
-\end{center}
+\begin{frame}{Mengenalgebra}
+\begin{figure}
+	\center
+	\includegraphics[scale=0.6]{pictures/menge2}
+\end{figure}
 \end{frame}
 
 \section{Notation und Operatorenbindung}
@@ -610,17 +632,33 @@ $\mathcal{V}$ & $\mathcal{P}(T)$ & Potenzmenge der Trägermenge T \\
 \cite{hoffmann2020grundlagen}
 \end{frame}
 
+\begin{frame}{Wie viele Funktionen gibt es denn?}
+\begin{itemize}
+	\item Prinzipiell: Kreuzprodukt der Eingangswerte, da $\mathcal{V} \times \mathcal{V} \times \ldots \mathcal{V}$ gilt
+	\item Somit ist der Eingangsvektor die Kombination aller möglichen Eingangswerte
+	\item Einstellige Funktion: $2^2 = 4$, da $\{0,1\} \to \{0,1\}$ abbilden
+	\item Zweistellige Funktionen: $2^4$, da $\{0,1\} \times \{0,1\}$ die Eingangswerte darstellen
+	\item Dreistellige Funktionen: $2^8$, da $\{0,1\} \times \{0,1\} \times \{0,1\}$ die Eingangswerte darstellen
+	\item Allgemein: $\mathcal{V}^n \to \mathcal{V}^m$ Anzahl: $(2^m)^{2^n}$ 
+\end{itemize}
+\end{frame}
+
 \begin{frame}{Beispiel}
-$$ Y = (A \lor B) \land (\neg A \lor B) \land (A \lor \neg B) $$
+\begin{align*}
+Y &= (A \lor B) \land (\neg A \lor B) \land (A \lor \neg B)\\
+Y &= (\neg a \land \neg b) \lor (a \land b)
+\end{align*}
 \end{frame}
 
 \section{Ausblick}
 \begin{frame}{Ausblick nächste Vorlesung}
 \begin{itemize}
-	\item Universelle Operatoren
+	\item Erfüllbarkeit \& Äquivalenz
 	\item De Morgan Regeln
+	\item Universelle Operatoren
+	\item Beweisstrategien \& Induktion -- Strukturelle Induktion
+	\item Dualitätsprinzip
 	\item Normalformen
-	\item Beweisstrategien \& Induktion
 	\item Bitweise logische Operationen, Bit-Maskierung
 	\item Einführung Logikgatter
 \end{itemize}
