@@ -25,6 +25,12 @@
 \usepackage{ stmaryrd }
 
 
+\usepackage{luacode} % for '\luaexec' macro
+%% Define a LaTeX "wrapper" macro:
+\newcommand\bitwiseXOR[2]{\luaexec{tex.sprint((#1)~(#2))}}
+\newcommand\bitwiseAND[2]{\luaexec{tex.sprint((#1)&(#2))}}
+\newcommand\bitwiseOR[2]{\luaexec{tex.sprint((#1)|(#2))}}
+
 
 \pgfplotsset{
     standard/.style={%Axis format configuration
@@ -279,17 +285,8 @@ Anwenden der Dominanz und Identität:
 \end{frame}
 
 
-
-\begin{frame}{Beispiel}
-\begin{align*}
-Y &= (A \lor B) \land (\neg A \lor B) \land (A \lor \neg B)\\
-Y &= (\neg a \land \neg b) \lor (a \land b)
-\end{align*}
-\end{frame}
-
-
 \section{Einleitung}
-\begin{frame}{Heute: Einleitung}
+\begin{frame}{Heute}
 \begin{itemize}
 	\item Erfüllbarkeit \& Äquivalenz
 	\item Beweisstrategien \& Induktion -- Strukturelle Induktion
@@ -298,7 +295,7 @@ Y &= (\neg a \land \neg b) \lor (a \land b)
 	\item Universelle Operatoren
 	\item Normalformen
 	\item Bitweise logische Operationen, Bit-Maskierung
-	\item Einführung Logikgatter
+	\item (Einführung Logikgatter)
 \end{itemize}
 \end{frame}
 
@@ -318,9 +315,24 @@ Y &= (\neg a \land \neg b) \lor (a \land b)
 
 \begin{frame}{Erfüllbarkeit/Unerfüllbar/Allgemeingültig}
 \begin{itemize}
-	\item $\phi = \neg x$
-	\item $\phi = x \land \neg x$
-	\item $\neg (x \land \neg x)$
+	\item Erfüllbare Funktionen
+	\begin{itemize}
+		\item $\varphi_1 = \neg x$
+		\item $\varphi_2 = x \land y$
+		\item $\varphi_3 = x \lor y$
+	\end{itemize}
+	\item Unerfüllbare Funktionen
+	\begin{itemize}
+		\item $\varphi_1 = 0$
+		\item $\varphi_2 = x \land \neg x$
+		\item $\varphi_3 = \neg (x \lor \neg x)$
+	\end{itemize}
+	\item Allgemeingültige Funktionen
+	\begin{itemize}
+		\item $\varphi_1 = 1$
+		\item $\varphi_2 = x \lor \neg x$
+		\item $\varphi_3 = \neg (x \land \neg x)$
+	\end{itemize}
 \end{itemize}
 \end{frame}
 
@@ -413,7 +425,7 @@ $2^0 = 2^{0+1}-1 \Leftrightarrow 1 = 1 \surd$\\
 	\item Induktionsschritt (IS):
 \begin{align*}
 \varphi(n) & \Rightarrow \varphi(n^+)\\
-2^0 + 2^1 + \dots 2^n + 2^{n+1} &= 2^{(n+1)+1}-1\\
+2^0 + 2^1 + \dots + 2^n + 2^{n+1} &= 2^{(n+1)+1}-1\\
 \textbf{Anm.: } 2^0 + 2^1 + \dots 2^n &= 2^{n+1} -1  \\
 \Leftrightarrow  2^{n+1} -1 + 2^{n+1} &= 2^{(n+1)+1}-1\\
 \textbf{Anm.: } a^n + a^m &= 2^{n+m}\\
@@ -447,8 +459,8 @@ $$\text{nach IA und IS } \Rightarrow \varphi(n) (\forall n(\varphi(n)))$$
 \begin{itemize}
 	\item Vollständige Induktion ist eine Spezialfall der strukturellen Induktion
 	\item Wie in der vollständigen Induktion: Beweis für Basisfälle (Atome)
-	\item Anschließend via Induktionsschritt, dass sich die Gültigkeit der Behauptung auf nächste Ebene überträgt
-	\item Basisfälle: Alle nicht zusammengesetzten Elemente
+	\item Anschließend via Induktionsschritt zeigen, dass sich die Gültigkeit der Behauptung auf nächste Ebene überträgt
+	\item Basisfälle (bool'sche Algebra): Alle nicht zusammengesetzten Elemente
 	\begin{itemize}
 		\item Wahrheitswerte 0 und 1,
 		\item bool'schen Ausdrücke mit einer Variablen
@@ -461,6 +473,7 @@ $$\text{nach IA und IS } \Rightarrow \varphi(n) (\forall n(\varphi(n)))$$
 	\end{itemize}
 \end{itemize}
 \end{frame}
+
 
 \begin{frame}{Beispiel Strukturelle Induktion}
 \begin{itemize}
@@ -487,7 +500,7 @@ somit ist $\varphi$ bewiesen.
 
 \subsection{Negationstheorem}
 \begin{frame}{Negationstheorem}
-\begin{theorem}
+\begin{theorem}[Negationstheorem]
 Sei $f(0, 1, x_1 , \ldots , x_n , \land, \lor, \neg)$ ein boolescher Ausdruck, in dem neben den Konstanten $1$ und $0$ und den Variablen $x_1 ,\ldots, x_n$ die booleschen Operatoren $\land, \lor$ und $\neg$ vorkommen. Dann gilt:
 $$
 	\overline{f(0, 1, x_1 , \ldots , x_n , \land, \lor, \neg)} = f(1, 0, \overline{x_1}, \ldots ,\overline{x_n} ,\lor, \land, \neg)
@@ -497,7 +510,7 @@ $$
 
 \subsection{Beweis: Negationstheorem}
 \begin{frame}{Beweis: Negationstheorem}
-\begin{proof}
+\begin{proof}[Negationstheorem]
 \textbf{Induktionsanfang (IA):} Sei $\varphi$ ein nicht zusammengesetzter Ausdruck. Wir betrachten alle Ausdrücke f der Länge 1:
 \begin{itemize}
 	\item[Fall 1] $\varphi = 0$\\
@@ -566,6 +579,8 @@ Fall 3: $\varphi = \varphi \lor \varphi$
 		\item (M2) $\overline{x \land y} = \overline{x} \lor \overline{y}$
 	\end{itemize}
 	\item Noch besser: Wir erhalten das Dualitätsprinzip -- Symmetrieeigenschaft!
+	\item D.h. Gültigkeit der dualen Gleichung ableitbar
+	\item Durch Vertauschen der Wahrheitswerte und der Operatoren $\land$ und $\lor$ entsteht 
 \end{itemize}
 \end{frame}
 
@@ -575,7 +590,7 @@ Sei
 $$
 \varphi(0, 1, x_1 , \ldots, x_n , \land, \lor, \neg) = \psi(0, 1, x_1 , \ldots, x_n , \land, \lor, \neg)
 $$
-ein Gesetz der booleschen Algebra, in der neben Variablen und den Konstanten $0$ und $1$ ausschließlich die Elementarverknüpfungen $\neg, land$ und $\lor$ vorkommen. Dann ist auch die duale Gleichung
+ein Gesetz der booleschen Algebra, in der neben Variablen und den Konstanten $0$ und $1$ ausschließlich die Elementarverknüpfungen $\neg, \land$ und $\lor$ vorkommen. Dann ist auch die duale Gleichung
 $$
 \varphi(0, 1, x_1 , \ldots, x_n , \land, \lor, \neg) = \psi(0, 1, x_1 , \ldots, x_n , \land, \lor, \neg)
 $$
@@ -585,7 +600,7 @@ ein Gesetz der booleschen Algebra.
 
 
 \begin{frame}{Vollständige Operatorensysteme}
-\begin{definition}
+\begin{definition}[Vollständige Operatorensystem]
 $\mathcal{M}$ sei eine beliebige Menge von Operatoren. $\mathcal{M}$ ist ein vollständiges Operatorensystem, wenn sich jede boolesche Funktion durch einen Ausdruck beschreiben lässt, in dem neben den Variablen $x_1 , \ldots , x_n$ ausschließlich Operatoren aus $\mathcal{M}$ vorkommen.
 \end{definition}
 \begin{itemize}
@@ -614,17 +629,177 @@ $\mathcal{M}$ sei eine beliebige Menge von Operatoren. $\mathcal{M}$ ist ein vol
 \begin{frame}{Normalformdarstellungen}
 \begin{itemize}
 	\item Normalform beschreibt eine eindeutige Darstellung
-	\item Bool'sche Funktionen: Exakt eine Art und Weise der Repräsentation
+	\item Vollform: Ausdruck, in dem jede Variable genau einmal vorkommt 
+	\item Literal: Teilausdruck, der entweder negierte oder unnegierte Variable darstellt
 	\item Wahrheitstafeldarstellung ist eine Art der Normalformdarstellungen
 	\item Bool'sche Ausdrücke hingegen sind keine Normalformdarstellung
 	\begin{itemize}
-		\item Jede bool'sche Funktion durch unendlich viele Ausdrücke beschreibbar
+		\item Jede bool'sche Funktion durch unendlich viele Ausdrücke beschrieben werden
 	\end{itemize}
 \end{itemize}
 \end{frame}
 
+\begin{frame}{Normalformdarstellungen}
+\begin{itemize}
+	\item Vollform: Ausdruck, in dem jede Variable genau einmal vorkommt 
+	\item Vollkonjunktion (\textbf{Minterm}): Ausdruck, in dem sämtliche vereinbarten Variablen (bzw. deren Negate) konjunktiv verbunden sind 
+	\begin{itemize}
+		\item Beispiel: $A,B,C: A \land \neg B \land B$
+	\end{itemize}
+	\item Volldisjunktion (\textbf{Maxterm}): Ausdruck, in dem sämtliche vereinbarten Variablen (bzw. deren Negate) disjunktiv verbunden sind
+	\begin{itemize}
+		\item Beispiel: $A,B,C: A \lor \neg B \lor \neg C$
+	\end{itemize}
+	\item Negationen nur in atomarer Form
+	\begin{itemize}
+		\item $\neg(A \land B)$: nicht atomar  
+		\item $(\neg A \lor \neg B)$: atomar
+	\end{itemize}
+\end{itemize}
+\end{frame}
 
+\begin{frame}{Formale Definition}
+\begin{definition}[Minterm, Maxterm, Literal]
+Sei $f(x_1 ,\ldots , x_n)$ eine beliebige $n$-stellige boolesche Funktion. Jeder Ausdruck der Form
+$$
+	\hat{x_1} \land \ldots \land \hat{x_n} \text{\quad mit } \hat{x_i} \in \{\overline{x_i}, x_i\} 
+$$
+heißt \textbf{Minterm}, jeder Ausdruck der Form
+$$
+	\hat{x_1} \lor \ldots \lor \hat{x_n} \text{\quad mit } \hat{x_i} \in \{\overline{x_i}, x_i\} 
+$$
+wird \textbf{Maxterm} genannt.\\
+Der Teilausdruck $\hat{x_i}$, der entweder aus einer negierten oder einer unnegierten Variablen besteht, heißt \textbf{Literal}.
+\end{definition}
+\end{frame}
 
+\subsection{Disjunktive Normalform}
+\begin{frame}{Disjunktive Normalform}
+\begin{itemize}
+	\item Die disjunktive Normalform (DNF) ist jene Darstellungsart, bei der eine Reihe von Vollkonjunktionen disjunktiv verknüpft wird. Negationen  treten nur in atomarer Form auf.
+	\begin{itemize}
+		\item $(A \land \neg B \land C) \lor (A \land B \land C) \lor (\neg A \land \neg B \land C)$ 
+	\end{itemize}
+	\item Andere Bezeichnungen:
+	\begin{itemize}
+		\item Kanonische disjunktive/konjunktive Normalform (KDNF/KKNF)
+		\item Vollständige disjunktive/konjunktive Normalform
+	\end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Beispiel: Disjunktive Normalform}
+$f(x_1, x_2, x_3) = (x_1 \Rightarrow x_2) \land (\neg x_1 \Leftrightarrow x_3)$
+\begin{table}[]
+\begin{tabular}{|c|c|c|c||c|c|c|}
+\hline
+ & $x_1$ & $x_2$ & $x_3$ & $x_1 \Rightarrow x_2$ & \textbf{$\neg x_1 \Leftrightarrow x_3$} & \textbf{$(x_1 \Rightarrow x_2) \land (\neg x_1 \Leftrightarrow x_3)$} \\ \hline
+1 & 0 & 0 & 0 & 1 & 0 & 0 \\ \hline
+2 & 0 & 0 & 1 & 1 & 1 & 1 \\ \hline
+3 & 0 & 1 & 0 & 1 & 0 & 0 \\ \hline
+4 & 0 & 1 & 1 & 1 & 1 & 1 \\ \hline
+5 & 1 & 0 & 0 & 0 & 1 & 0 \\ \hline
+6 & 1 & 0 & 1 & 0 & 0 & 0 \\ \hline
+7 & 1 & 1 & 0 & 1 & 1 & 1 \\ \hline
+8 & 1 & 1 & 1 & 1 & 0 & 0 \\ \hline
+\end{tabular}
+\end{table}
+Vollkonjunktion/Minterm: 2: $(\neg x_1 \land \neg x_2 \land x_3)$, 4:$(\neg x_1 \land x_2 \land x_3)$, 7:$(x_1 \land x_2 \land \neg x_3)$ \\
+DNF: $(\neg x_1 \land \neg x_2 \land x_3) \lor (\neg x_1 \land x_2 \land x_3) \lor (x_1 \land x_2 \land \neg x_3)$
+\end{frame}
+
+\subsection{Konjunktive Normalform}
+\begin{frame}{Konjunktive Normalform}
+\begin{itemize}
+	\item Die konjunktive Normalform (KNF) ist jene Darstellungsart, bei der eine Reihe von Volldisjunktionen konjunktiv verknüpft wird. Negationen treten nur in atomarer Form auf.
+	\begin{itemize}
+		\item $(\neg A \lor \neg B \lor \neg C) \land (A \lor B \lor C) \land (A \lor \neg B \lor \neg C)$ 
+	\end{itemize}
+	\item Andere Bezeichnungen:
+	\begin{itemize}
+		\item Kanonische disjunktive/konjunktive Normalform (KDNF/KKNF)
+		\item Vollständige disjunktive/konjunktive Normalform
+	\end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Beispiel: Konjunktive Normalform}
+\vspace*{-0.325cm}
+$f(x_1, x_2, x_3) = (x_1 \land x_2) \lor x_3$
+\begin{table}[]
+\scalebox{0.8}{
+\begin{tabular}{|c|c|c|c||c|c|}
+\hline
+ & $x_1$ & $x_2$ & $x_3$ & \textbf{$x_1 \land x_2$} & \textbf{$(x_1 \land x_2) \lor x_3$} \\ \hline
+1 & 0 & 0 & 0 & 0 & 0  \\ \hline
+2 & 0 & 0 & 1 & 0 & 1  \\ \hline
+3 & 0 & 1 & 0 & 0 & 0  \\ \hline
+4 & 0 & 1 & 1 & 1 & 1  \\ \hline
+5 & 1 & 0 & 0 & 0 & 0  \\ \hline
+6 & 1 & 0 & 1 & 0 & 1  \\ \hline
+7 & 1 & 1 & 0 & 1 & 1  \\ \hline
+8 & 1 & 1 & 1 & 1 & 1 \\ \hline
+\end{tabular}%
+}
+\end{table}
+Vollkonjunktion/Minterm: 1: $\neg(\neg x_1 \land \neg x_2 \land \neg x_3)$, 3: $\neg(\neg x_1 \land x_2 \land \neg x_3)$, 5: $\neg(x_1 \land \neg x_2 \land \neg x_3)$\\
+Volldisjunktion/Maxterm: 1: $(x_1 \lor x_2 \lor x_3)$, 3: $(x_1 \lor \neg x_2 \lor x_3)$, 5: $(\neg x_1 \lor x_2 \lor x_3)$\\
+KNF: $(x_1 \lor x_2 \lor x_3) \land (x_1 \lor \neg x_2 \lor x_3) \land (\neg x_1 \lor x_2 \lor x_3)$
+\end{frame}
+
+\begin{frame}{}
+\begin{itemize}
+	\item Eigenschaft eines Minterms bzw. Maxterms ermöglicht Konstruktion aller $n$-stelligen bool'schen Funktionen
+	\item D.h. durch KNF und DNF können wir eindeutige Darstellungen für beliebige Funktionen angeben
+	\item Diese Darstellung hat ein Problem: Sie ist nicht minimal
+	\begin{itemize}
+		\item Es gibt eine kürzere Darstellung
+		\item KNF für jedes Element der Nullmenge einen Maxterm
+		\item DNF für jedes Element der Einsmenge einen Minterm
+		\item Dünn bzw. dicht besetzte Funktionen kompakte Darstellung
+		\item Andere Formelklassen: Länge steigt der KNDF/DNF exponentiell mit Anzahl freien Variablen der Funktion
+	\end{itemize}
+	\item Bsp.: Antivalenz (XOR) $A_n(x_1 ,\ldots , x_n ) = x_1 \nLeftrightarrow x2  x3 \nLeftrightarrow \ldots \nLeftrightarrow x_n$
+	\item Lösung: Reed-Muller-Normalform
+\end{itemize}
+\end{frame}
+
+\section{Bitweise logische Operationen}
+\begin{frame}{Bitweise logische Operationen}
+\begin{center}
+$A,B$ seien Bitvektoren, $\circ$ eine beliebige Verknüpfung
+\begin{figure}
+\includegraphics[scale=0.3]{pictures/bitvec}
+\end{figure}
+Dann erhalten wir als Ergebnis: $E = A \circ B$
+\end{center}
+\end{frame}
+
+\subsection{Bitmaskierung}
+\begin{frame}{Bitmaskierung}
+\begin{center}
+UND, ODER und XOR als spezielle Bit-Masken
+\begin{figure}
+\includegraphics[scale=0.35]{pictures/masking}
+\end{figure}
+\end{center}
+\end{frame}
+
+\begin{frame}{UND Maskierung}
+Maskierung von IP-Adressen:
+\begin{figure}
+\includegraphics[scale=0.4]{pictures/UND}
+\end{figure}
+\end{frame}
+\begin{frame}{OR Maskierung}
+
+\begin{center}
+Image Mask
+\begin{figure}
+\includegraphics[scale=0.4]{pictures/OR}
+\end{figure}
+\end{center}
+\end{frame}
 
 
 

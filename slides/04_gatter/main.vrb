@@ -1,0 +1,16 @@
+Let $c_1, ... , c_n$ be a password, with $c_1 = \bot, c_n = \top$.
+	In other words it is a directed graph $G = (V, E)$ mapping
+	$$
+	Pr: E \rightarrow [0,1] \qquad label: E \rightarrow \Omega
+	$$
+	Algorithm: traverse the graph, multiply edge probabilities.
+	\begin{algorithmic}
+\Require $c_1 ..., c_n$
+\State $v := \bot, p=1$
+\For{$i = 2, ..., n$}
+\State	Let $e := (v,v')$ be the edge labelled $c_i$
+\State	$p := p \cdot Pr(e)$
+\State	$v := v'$
+\EndFor
+\State return $p$
+\end{algorithmic}
