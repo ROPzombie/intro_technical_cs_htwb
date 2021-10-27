@@ -19,7 +19,7 @@
        * Transistor (nMOS/pMOS) - Realisierung boolscher Funktionen
        * Gatter
          * Operatoren & Notation
-         * Decoder/Encoder,
+         * Decoder/Encoder
          * (De)Multiplexer 
        * Normalformen
          * DNF, KNF
