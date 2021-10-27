@@ -23,6 +23,9 @@
 \usepackage{pgfplots}
 \usepackage{venndiagram}
 \usepackage{ stmaryrd }
+\usepackage{circuitikz}
+\usepackage{bohr}
+\usepackage{csquotes}
 
 
 \usepackage{luacode} % for '\luaexec' macro
@@ -31,6 +34,13 @@
 \newcommand\bitwiseAND[2]{\luaexec{tex.sprint((#1)&(#2))}}
 \newcommand\bitwiseOR[2]{\luaexec{tex.sprint((#1)|(#2))}}
 
+
+\def\CalcC#1{%
+\coordinate (base) at (#1.B);
+\coordinate (collector) at (#1.C);
+\coordinate (emitter) at (#1.E);
+\draw (barycentric cs:base=0.32,collector=0.5,emitter=0.5) circle [radius=14pt];
+}
 
 \pgfplotsset{
     standard/.style={%Axis format configuration
@@ -204,11 +214,743 @@ Dann erhalten wir als Ergebnis: $E = A \circ B$
 \section{Einleitung}
 \begin{frame}{Heute:}
 \begin{itemize}
-	\item
+	\item Von der Bool'schen Algebra zu Logikgattern
+	\item Grundlegende Logikgatter
+	\item Aufbau Transistor
+	\item Vom Transistor zur logischen Schaltung
 \end{itemize}
-
+\end{frame}
+\subsection{Beispiele}
+\begin{frame}
+	\begin{itemize}
+		\item Status: Wir wissen, wie ein Signal von Analog auf Digital gewandelt wird
+		\begin{itemize}
+			\item Gist: wie kommen die Bits in den Rechner
+		\end{itemize}
+		\item Wir wissen, wie logische Aussagen verarbeitet werden können
+		\item Noch offen: Wie werden hieraus komplexe Recheneinheiten?
+	\end{itemize}
 \end{frame}
 
+\begin{frame}{Intel 4004 Prozessor}
+\begin{figure}
+\center
+\includegraphics[scale=0.7]{pictures/4004}
+\end{figure}
+\end{frame}
+
+\begin{frame}{Intel 4004 Prozessor}
+\begin{figure}
+\center
+\includegraphics[scale=0.25]{pictures/4004_2}
+\end{figure}
+\end{frame}
+
+\begin{frame}{4 Bit ALU Package Layout}
+\begin{figure}
+\center
+\includegraphics[scale=0.25]{pictures/layout_alu}
+\end{figure}
+\end{frame}
+
+
+\begin{frame}{4 Bit ALU -- Logikgatter}
+\begin{columns}[T] % align columns
+\begin{column}{.48\textwidth}
+\includegraphics[scale=0.25]{pictures/alu2}
+\end{column}%
+\hfill%
+\begin{column}{.48\textwidth}
+\centering
+\vspace*{1cm}
+\includegraphics[scale=0.4]{pictures/alu1}
+\end{column}%
+\end{columns}
+\end{frame}
+
+\section{Bool'sche Algebra $\to$ Logikgatter}
+\begin{frame}{Bool'sche Algebra $\to$ Logikgatter}
+\begin{itemize}
+	\item Bis jetzt abstrakt -- mathematische Definition der logischen Aussage
+	\item D.h. Zuordnung von Werten auf binärer Ebene
+	\item Umsetzung der bool'schen Funktionen mithilfe von Logikgattern (Gatter)	
+	\item Physikalische Umsetzung beispielsweise mithilfe von Transistoren
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Darstellung Logikgatter}
+\begin{figure}
+\center
+\includegraphics[scale=0.25]{pictures/logikgatter}
+\end{figure}
+\end{frame}
+
+
+\begin{frame}{Beispiel: Paritätsfunktion}
+\begin{columns}[T] % align columns
+\begin{column}{.48\textwidth}
+\vspace*{-1.5cm}
+\begin{itemize}
+	\item Eingänge: $x_1, x_2, x_3, x_4$
+	\item Ausgänge: $y$
+	\item Gatter: $XOR$
+	\item Stufen: $2$
+\end{itemize}
+
+\end{column}%
+\hfill%
+\begin{column}{.48\textwidth}
+\begin{circuitikz} 
+\draw
+(2,0) node[xor port] (xor1) {}
+(2,2) node[xor port] (xor2) {}
+(4,1) node[xor port] (xor3) {}
+(xor1.in 1) node[left](f) {$X_3$}
+(xor1.in 2) node[left](f) {$X_4$}
+(xor2.in 1) node[left](f) {$X_1$}
+(xor2.in 2) node[left](f) {$X_2$}
+(xor1.out) |- (xor3.in 2)
+(xor2.out) |- (xor3.in 1)
+(xor3.out) node[right](j) {$y$};
+;
+\end{circuitikz}
+\end{column}%
+\end{columns}
+\end{frame}
+
+
+\begin{frame}{Beispiel: Paritätsfunktion}
+\begin{columns}[T] % align columns
+\begin{column}{.48\textwidth}
+\begin{itemize}
+	\item Eingänge: $x_1, x_2, x_3, x_4$
+	\item Ausgänge: $y$
+	\item Gatter: $XOR$
+	\item Stufen: $2$
+\end{itemize}
+\begin{table}[]
+\begin{tabular}{|l|l|l|l||l|}\hline
+$x_1$ & $x_2$ & $x_3$ & $x_4$ & $y$ \\ \hline
+0 & 0 & 0 & 0 & 0 \\ \hline
+0 & 0 & 0 & 1 & 1 \\ \hline
+0 & 0 & 1 & 0 & 1 \\ \hline
+0 & 0 & 1 & 1 & 0 \\ \hline
+0 & 1 & 0 & 0 & 1 \\ \hline
+... & & & & \\ \hline
+\end{tabular}
+\end{table}
+\end{column}%
+\hfill%
+\begin{column}{.48\textwidth}
+\begin{circuitikz} 
+\draw
+(2,0) node[xor port] (xor1) {}
+(2,2) node[xor port] (xor2) {}
+(4,1) node[xor port] (xor3) {}
+(xor1.in 1) node[left](f) {$X_3$}
+(xor1.in 2) node[left](f) {$X_4$}
+(xor2.in 1) node[left](f) {$X_1$}
+(xor2.in 2) node[left](f) {$X_2$}
+(xor1.out) |- (xor3.in 2)
+(xor2.out) |- (xor3.in 1)
+(xor3.out) node[right](j) {$y$};
+;
+\end{circuitikz}
+\end{column}%
+\end{columns}
+\end{frame}
+
+\section{Grundlagen}
+
+\begin{frame}{Atommodell nach Bohr}
+\begin{columns}[T] % align columns
+\begin{column}{.48\textwidth}
+\begin{itemize}
+	\item Grundsätzlich: Kern -- Neutronen, Protonen
+	\item Elektronen außerhalb des Kerns, frei beweglich in Orbitalräumen
+	\item Äußerste Schale: Valenzelektronen
+	\item Zusammenschluss von Atomen über die Valenzelektronen
+\end{itemize}
+\end{column}%
+\hfill%
+\begin{column}{.48\textwidth}
+\bohr{1}{H}
+\bohr{2}{He}
+\bohr{14}{Si}
+\end{column}%
+\end{columns}
+\end{frame}
+
+\subsection{Leiter \& Bändermodell}
+\begin{frame}{Leiter \& Bändermodell}
+\begin{columns}[T] % align columns
+\begin{column}{.48\textwidth}
+\vspace*{-0.2cm}
+\begin{figure}
+\center
+\includegraphics[scale=.45]{pictures/baendermod}
+\end{figure}
+\end{column}%
+\hfill%
+\begin{column}{.48\textwidth}
+\vspace*{-0.3cm}
+\begin{figure}
+\center
+\includegraphics[scale=.45]{pictures/halbleiter_band}
+\end{figure}
+\end{column}%
+\end{columns}
+\end{frame}
+
+\begin{frame}{Siliziumgitter}
+\begin{columns}[T] % align columns
+\begin{column}{.48\textwidth}
+\begin{itemize}
+	\item Struktur des Siliziumkristalls
+	\item Jedes Atom ist von 4 weiteren Atomen umgeben
+	\item Jeweils zwei gemeinsam genutzte Valenzelektronen eine stabile Verbindung
+\end{itemize}
+\end{column}%
+\hfill%
+\begin{column}{.48\textwidth}
+\begin{tikzpicture}[
+  baseline=(nucleus.base),
+  nucleus options/.style = {draw=black!80,fill=black!10,opacity=.25},
+  shell options/.style = {draw=blue!75,thin},
+  electron options/.style = {blue!50!black!50},
+  silicon/.pic = {
+    \node (nucleus) at (0,0) {Si};
+    \draw[nucleus options] (nucleus) circle (1em);
+    \draw[shell options] (nucleus) circle (2em);
+    \foreach \angle in {0,90,180,270} {
+      \fill[electron options] (nucleus) ++(\angle:2em) circle (1.5pt);
+    }
+  },
+  ]
+  \foreach \angle in {0,90,180,270} {
+    \fill[lightgray,rotate=\angle] (2.5em,0) ellipse (1em and .5em);
+    \path (\angle:5em) pic {silicon};
+  }
+  \path (0,0) pic {silicon};
+\end{tikzpicture}
+\end{column}%
+\end{columns}
+\end{frame}
+
+\begin{frame}{Eigenleitung im Halbleiterkristall}
+\begin{columns}[T] % align columns
+\begin{column}{.48\textwidth}
+\begin{itemize}
+	\item Freigesetzten Leitungselektronen richten sich im elektrischen Feld aus
+	\item Freie Elektronen wandern in Richtung der positiven Spannungsquelle
+	\item Gleichzeitig entstehenden Elektronenlöcher bewegen sich in entgegengesetzter Richtung auf den Minuspol zu
+\end{itemize}
+\end{column}%
+\hfill%
+\begin{column}{.48\textwidth}
+\vspace*{-0.3cm}
+\begin{figure}
+\center
+\includegraphics[scale=.4]{pictures/eigenleitung}
+\end{figure}
+\end{column}%
+\end{columns}
+\end{frame}
+
+
+\begin{frame}{Elektronenüberschussleiter: $n$-Leiter}
+\begin{columns}[T] % align columns
+\begin{column}{.48\textwidth}
+\begin{itemize}
+	\item Struktur eines Elektronenüberschussleiters ($n$-Leiter)
+	\item Einbau von Phosphoratomen zusätzliche Valenzelektronen im Gitter
+	\item Zusätzliche Elektronen können sich nahezu ungehindert durch die Kristallstruktur bewegen
+\end{itemize}
+\end{column}%
+\hfill%
+\begin{column}{.48\textwidth}
+\begin{figure}
+\center
+\includegraphics[scale=0.3]{pictures/n_leiter}
+\end{figure}
+\end{column}%
+\end{columns}
+\end{frame}
+
+\begin{frame}{Elektronenmangelleiter: $p$-Leiter}
+\begin{columns}[T] % align columns
+\begin{column}{.48\textwidth}
+\begin{itemize}
+	\item Struktur eines Elektronenmangelleiters ($p$-Leiter)
+	\item Einbau von Aluminiumatomen/Bohr entstehen künstliche Elektronenlöcher
+	\item Elektronenlöcher wirken, wie positive Ladungsträger
+\end{itemize}
+\end{column}%
+\hfill%
+\begin{column}{.48\textwidth}
+\begin{figure}
+\center
+\includegraphics[scale=0.3]{pictures/p_leiter}
+\end{figure}
+\end{column}%
+\end{columns}
+\end{frame}
+
+\section{Halbleiter}
+
+\begin{frame}{Leiter/Halbleiter}
+	\begin{itemize}
+		\item Halbleiter sind Stoffe, deren elektrische Leitfähigkeit geringer als von\\
+		Leitern und größer als von Nichtleitern ist
+		\item Halbleiter wie Silizium und Germanium verfügen über eine Kristallstruktur
+		\item Die Kristallstruktur wird mit hoher Reinheit hergestellt
+		\item Auf ca. 1010 Atome kommt ein Fremdatom
+		\item Die Eigenleitfähigkeit von Halbleitern basiert auf:
+		\begin{itemize}
+			\item Verunreinigung
+			\item Aufbrechen von Kristallbindungen
+			\item Oberflächen-Leitfähigkeit
+		\end{itemize}
+
+	\end{itemize}
+\end{frame}
+
+\subsection{Halbleiterdioden -- $pn$-Übergang}
+\begin{frame}{Halbleiterdioden}
+\begin{columns}[T] % align columns
+\begin{column}{.48\textwidth}
+\begin{itemize}
+	\item Dioden: spezielle Schaltelemente
+	\item Begrenzung des Stromﬂuss richtungsabhängig
+	\item In Durchlassrichtung neutral
+	\item In Sperrrichtung als Isolator
+\end{itemize}
+\end{column}%
+\hfill%
+\begin{column}{.48\textwidth}
+\begin{figure}
+\center
+\includegraphics[scale=0.3]{pictures/halbleiterdiode1}
+\end{figure}
+\end{column}%
+\end{columns}
+\end{frame}
+
+\begin{frame}{Halbleiterdioden -- $pn$-Übergang}
+\begin{columns}[T] % align columns
+\begin{column}{.48\textwidth}
+\begin{itemize}
+	\item Dioden: spezielle Schaltelemente
+	\item Begrenzung des Stromﬂuss richtungsabhängig
+	\item In Durchlassrichtung neutral
+	\item In Sperrrichtung als Isolator
+\end{itemize}
+\end{column}%
+\hfill%
+\begin{column}{.48\textwidth}
+\begin{figure}
+\center
+\includegraphics[scale=0.3]{pictures/halbleiterdiode2}
+\end{figure}
+\end{column}%
+\end{columns}
+\end{frame}
+
+\begin{frame}{Halbleiterdioden -- $pn$-Übergang}
+\begin{columns}[T] % align columns
+\begin{column}{.48\textwidth}
+\begin{itemize}
+	\item Dioden: spezielle Schaltelemente
+	\item Begrenzung des Stromﬂuss richtungsabhängig
+	\item In Durchlassrichtung neutral
+	\item In Sperrrichtung als Isolator
+\end{itemize}
+\end{column}%
+\hfill%
+\begin{column}{.48\textwidth}
+\begin{figure}
+\center
+\includegraphics[scale=0.3]{pictures/halbleiterdiode2}
+\end{figure}
+\end{column}%
+\end{columns}
+\end{frame}
+
+\begin{frame}{Halbleiterdioden -- $pn$-Übergang}
+\begin{columns}[T] % align columns
+\begin{column}{.48\textwidth}
+\begin{itemize}
+	\item Dioden: spezielle Schaltelemente
+	\item Begrenzung des Stromﬂuss richtungsabhängig
+	\item In Durchlassrichtung neutral
+	\item In Sperrrichtung als Isolator
+	\begin{itemize}
+		\item Anlegen einer Spannung in Sperrrichtung
+		\item Minuspol: $p$-Schicht, Pluspol $p$-Schicht
+		\item Ladungsträger Richtung Spannungspole weggezogen
+		\item D.h. Vergrößerung Sperrschicht $\to$ Isolator
+	\end{itemize}
+\end{itemize}
+\end{column}%
+\hfill%
+\begin{column}{.48\textwidth}
+\begin{figure}
+\center
+\includegraphics[scale=0.5]{pictures/sperrrichtung}
+\end{figure}
+\end{column}%
+\end{columns}
+\end{frame}
+
+\begin{frame}{Halbleiterdioden -- $pn$-Übergang}
+\begin{columns}[T] % align columns
+\begin{column}{.48\textwidth}
+\begin{itemize}
+	\item Dioden: spezielle Schaltelemente
+	\item Begrenzung des Stromﬂuss richtungsabhängig
+	\item In Durchlassrichtung neutral
+	\begin{itemize}
+		\item Anlegen einer Spannung in Sperrrichtung
+		\item Pluspol: $p$-Schicht, Minus $p$-Schicht
+		\item Freie Ladungsträger bewegen sich aufeinander zu
+		\item D.h. Rekombination i.d. Sperrschicht $\to$ Leiter
+	\end{itemize}
+	\item In Sperrrichtung als Isolator
+\end{itemize}
+\end{column}%
+\hfill%
+\begin{column}{.48\textwidth}
+\begin{figure}
+\center
+\includegraphics[scale=0.5]{pictures/durchlass}
+\end{figure}
+\end{column}%
+\end{columns}
+\end{frame}
+
+
+
+\section{Transistor}
+\begin{frame}{Transistor -- Transfer Resistor}
+\begin{columns}[T] % align columns
+\begin{column}{.48\textwidth}
+	\begin{itemize}
+		\item Gist: steuerbarer Widerstand
+		\item Kann elektrisches Signal verstärken
+		\item Digital ansteuerbar zum Ein- oder Ausschalten
+		\item Bipolare Transistoren
+		\begin{itemize}
+			\item $npn$-Transistor
+			\item $pnp$-Transistor
+		\end{itemize}
+		\item Unipolare Transistoren -- Feldeffekttransistor
+		\begin{itemize}
+			\item J-FET
+			\item MOS-FET
+		\end{itemize}
+	\end{itemize}
+\end{column}%
+\hfill%
+\begin{column}{.48\textwidth}
+\begin{figure}
+\center
+\includegraphics[scale=0.16]{pictures/transistors}
+\end{figure}
+\end{column}%
+\end{columns}
+\end{frame}
+
+\subsection{npn-Transistor}
+\begin{frame}{$npn$-Transistor}
+\begin{columns}[T] % align columns
+\begin{column}{.48\textwidth}
+	\begin{itemize}
+		\item Emitter \& Kollektor dienen Zufluss bzw. Abfluss der Elektronen
+		\item Basis: Steueranschluss regelt den Stromfluss zwischen Emitter und Kollektor
+		\item Steueranschluss verstärkende Wirkung:
+		\begin{itemize}
+			\item Geringe Änderung Stromfluss auf Emitter-Basis-Strecke
+			\item $\to$ große Änderung des Stromflusses auf Emitter-Kollektor
+		\end{itemize}
+	\end{itemize}
+\end{column}%
+\hfill%
+\begin{column}{.48\textwidth}
+\begin{figure}
+\center
+\includegraphics[scale=0.4]{pictures/npn_schema}\\
+\includegraphics[scale=0.4]{pictures/npn_aufbau}
+\end{figure}
+\end{column}%
+\end{columns}
+\end{frame}
+
+\begin{frame}{$npn$-Transistor: Basis-Emitter-Strecke}
+\begin{columns}[T] % align columns
+\begin{column}{.48\textwidth}
+	\begin{itemize}
+		\item $pn$-Übergang ist in Durchlassrichtung gepolt
+		\item Ermöglicht in Abhängigkeit zur angelegten Spannung einen Stromfluss im Basisstromkreis
+	\end{itemize}
+\end{column}%
+\hfill%
+\begin{column}{.48\textwidth}
+\begin{figure}
+\center
+\includegraphics[scale=0.6]{pictures/be}
+\end{figure}
+\end{column}%
+\end{columns}
+\end{frame}
+
+\begin{frame}{$npn$-Transistor: Basis-Kollektor-Strecke}
+\begin{columns}[T] % align columns
+\begin{column}{.48\textwidth}
+	\begin{itemize}
+		\item Basis besitzt gegenüber Kollektor negatives elektrisches Potenzial
+		\item Stromfluss wird durch den in Sperrichtung gepolten $pn$-Übergang unterbunden
+	\end{itemize}
+\end{column}%
+\hfill%
+\begin{column}{.48\textwidth}
+\begin{figure}
+\center
+\includegraphics[scale=0.6]{pictures/bk}
+\end{figure}
+\end{column}%
+\end{columns}
+\end{frame}
+
+\begin{frame}{$npn$-Transistor: Emitter-Kollektor-Strecke}
+\begin{columns}[T] % align columns
+\begin{column}{.48\textwidth}
+	\begin{itemize}
+		\item Zwischen Emitter und Kollektor stellt sich ein Stromfluss ein
+		\item Stärke proportional mit der Stärke des Basisstroms zunimmt
+	\end{itemize}
+\end{column}%
+\hfill%
+\begin{column}{.48\textwidth}
+\begin{figure}
+\center
+\includegraphics[scale=0.6]{pictures/ek}
+\end{figure}
+\end{column}%
+\end{columns}
+\end{frame}
+
+\begin{frame}{$pnp$-Transistor: Emitter-Kollektor-Strecke}
+\begin{columns}[T] % align columns
+\begin{column}{.58\textwidth}
+	\begin{itemize}
+		\item Zusammensetzung der Halbleiter \enquote{invers} zu $pnp$
+		\item Basis $n$-Gebiet
+		\item Emitter und Kollektor dagegen $p$-Gebiet
+		\item Positive Spannung am Emitter eine Flut von Elektronenlöchern aus dem $p$-Leiter in das $n$-Gebie
+		\item Negative Spannung	: fließt geringer Teil der Defektelektronen über Basis ab
+		\item Großteil der Elektronenlöcher wird durch die starke negative Kollektorspannung in die obere $p$-Schicht gezogen
+		\item $\to$ fließt als Kollektorenstrom ab
+	\end{itemize}
+\end{column}%
+\hfill%
+\begin{column}{.38\textwidth}
+\begin{figure}
+\center
+\includegraphics[scale=0.4]{pictures/pnp_schema}\\
+\includegraphics[scale=0.4]{pictures/pnp_aufbau}
+\end{figure}
+\end{column}%
+\end{columns}
+\end{frame}
+
+\subsection{Schaltungen mit npn-Transistor}
+\begin{frame}{Buffer-Schaltungen mit $npn$-Transistor}
+\begin{figure}
+\center
+\includegraphics[scale=0.8]{pictures/buffer}
+\end{figure}
+\end{frame}
+
+
+\begin{frame}{Not-Schaltungen mit $npn$-Transistor}
+\begin{figure}
+\center
+\includegraphics[scale=0.8]{pictures/not}
+\end{figure}
+\end{frame}
+
+
+\begin{frame}{AND-Schaltungen mit $npn$-Transistor}
+\begin{figure}
+\center
+\includegraphics[scale=0.65]{pictures/and}
+\end{figure}
+\end{frame}
+
+\begin{frame}{NAND-Schaltungen mit $npn$-Transistor}
+\begin{figure}
+\center
+\includegraphics[scale=0.65]{pictures/nand}
+\end{figure}
+\end{frame}
+
+
+\begin{frame}{OR-Schaltungen mit $npn$-Transistor}
+\begin{figure}
+\center
+\includegraphics[scale=0.6]{pictures/or}
+\end{figure}
+\end{frame}
+
+\begin{frame}{NOR-Schaltungen mit $npn$-Transistor}
+\begin{figure}
+\center
+\includegraphics[scale=0.65]{pictures/nor}
+\end{figure}
+\end{frame}
+
+\subsection{Feldeffekttransistoren}
+\begin{frame}{Feldeffekttransistoren: JFET}
+\begin{columns}[T] % align columns
+\begin{column}{.58\textwidth}
+	\begin{itemize}
+		\item Funktional Äquivalent
+		\item Gate-Anschluss JFET entspricht der Basis
+		\item Drain-Anschluss ist der Kollektor
+		\item Source-Anschluss dem Emitter
+	\end{itemize}
+\end{column}%
+\hfill%
+\begin{column}{.38\textwidth}
+\begin{figure}
+\center
+\includegraphics[scale=0.4]{pictures/npn_jfet}\\
+\includegraphics[scale=0.4]{pictures/pnp_jfet}
+\end{figure}
+\end{column}%
+\end{columns}
+\end{frame}
+
+\begin{frame}{Feldeffekttransistoren: JFET}
+\begin{columns}[T] % align columns
+\begin{column}{.58\textwidth}
+	\begin{itemize}
+		\item Source und Drain sind durch dotierten Halbleiterkanal verbunden
+		\item Mitte durch zwei komplementär dotierte Gebiete -- dem Gate
+		\item Kanal $n$-dotiert und das Gate $p$-dotiert
+		\begin{itemize}
+			\item $n$-Kanal-JFET
+		\end{itemize}
+		\item Kanal $p$-dotierten und $n$ dotierten Gate-Gebiet
+		\begin{itemize}
+			\item $p$-Kanal-JFET
+		\end{itemize}
+	\end{itemize}
+\end{column}%
+\hfill%
+\begin{column}{.38\textwidth}
+\begin{figure}
+\center
+\includegraphics[scale=0.4]{pictures/jfet_aufbau}\\
+\end{figure}
+\end{column}%
+\end{columns}
+\end{frame}
+
+\begin{frame}{$n$-Kanal-JFET}
+\begin{figure}
+\center
+\includegraphics[scale=0.4]{pictures/n_jfet}
+\end{figure}
+\end{frame}
+
+\begin{frame}{$p$-Kanal-JFET}
+\begin{figure}
+\center
+\includegraphics[scale=0.4]{pictures/p_jfet}
+\end{figure}
+\end{frame}
+
+\subsection{MOS-Feldeffekttransistoren}
+\begin{frame}{MOS-Feldeffekttransistoren (MOSFETs)}
+\begin{columns}[T] % align columns
+\begin{column}{.58\textwidth}
+	\begin{itemize}
+		\item MOS-Technik (MOS = Metal Oxide Semiconductor)
+		\item Funktional entspricht MOSFET weitgehend dem JFET
+		\begin{itemize}
+			\item Stromfluss zwischen Source- \& Drain-Anschluss, Gate angelegtes elektrisches Feld beeinflusst
+			\item Wieder zwei Varianten: $p$ und $n$		
+		\end{itemize}
+	\end{itemize}
+\end{column}%
+\hfill%
+\begin{column}{.38\textwidth}
+\begin{figure}
+\center
+\includegraphics[scale=0.4]{pictures/n_mosfet}\\
+\includegraphics[scale=0.4]{pictures/p_mosfet}
+\end{figure}
+\end{column}%
+\end{columns}
+\end{frame}
+
+\begin{frame}{$n$-MOS-Feldeffekttransistoren}
+\begin{itemize}
+	\item $V_{DS}$ die Spannung Drain-Source-Strecke
+	\item $V_{GS}$ die Spannung Gate-Source-Strecke
+	\item Source-Anschluss und das Substrat das gleiche elektrische Potenzial
+	\begin{itemize}
+		\item $V_{GS}$ gleichermaßen die Spannung zwischen Gate \& Substrat.
+	\end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{$V_{GS} = 0$}
+\begin{columns}[T] % align columns
+\begin{column}{.62\textwidth}
+	\begin{itemize}
+		\item Drain, Substrat und Source operieren als klassischer $npn$-Übergangs
+		\item Halbleiterkristall verhält sich wie entgegengesetzte Dioden
+		\item D.h. Stromfluss in beide Richtungen unterbrochen
+		\item Drain- an Pluspol \& Source-Anschluss Minuspol, so sperrt der linke $pn$-Übergang
+		\item Durch Umpolen der Spannung in Durchlassrichtung geschaltet
+		\begin{itemize}
+			\item Rechte Übergang in den sperrenden Zustand, verhindert den Ladungstransport
+		\end{itemize}
+	\end{itemize}
+\end{column}%
+\hfill%
+\begin{column}{.38\textwidth}
+\begin{figure}
+\center
+\includegraphics[scale=0.5]{pictures/fall1}\\
+\end{figure}
+\end{column}%
+\end{columns}
+\end{frame}
+
+\begin{frame}{$V_{GS} > 0, V_{DS} = 0$}
+\begin{columns}[T] % align columns
+\begin{column}{.62\textwidth}
+	\begin{itemize}
+		\item Positive Spannung gegenüber dem Source-Anschluss
+		\item Minoritätsträger -- p-dotierten Substrats die Elektronen, nach oben gezogen
+		\item Grenzschicht zwischen Dielektrium und Substrat rekombinieren mit Elektronenlöchern
+		\item Führt zur Verarmung der Majoritätsträger
+		\item Überschreitet die Spannung Schwelle, werden mehr Elektronen in Grenzschicht gezogen,
+		\item als für eine vollständige Rekombination gebraucht werden
+	\end{itemize}
+\end{column}%
+\hfill%
+\begin{column}{.38\textwidth}
+\begin{figure}
+\center
+\includegraphics[scale=0.5]{pictures/fall2}\\
+\end{figure}
+\end{column}%
+\end{columns}
+\end{frame}
 
 \section*{Quellen}
 \appendix
