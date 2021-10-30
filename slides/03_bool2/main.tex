@@ -378,7 +378,7 @@ Mithilfe von Wahrheitstafeln, algebraischer Umformung oder durch erzeugen einer 
 	\end{itemize}
 	\item Kettenschluss
 	\begin{itemize}
-		\item Sind $A \Rightarrow B$ und $B \Rightarrow C$ allgemeingültig, so ist $A \Rightarrow C$ allgemeingültig
+		\item Sind $A \Rightarrow B$ und $B \Rightarrow C$ allgemeingültig, so ist $A \Rightarrow C$ allgemeingültig 
 		\item Korrektheit folgt aus der Allgemeingültigkeit von $((A \Rightarrow B)\land (B \Rightarrow C)) \Rightarrow (A \Rightarrow C)$
 	\end{itemize}
 \end{itemize}
@@ -396,6 +396,38 @@ Mithilfe von Wahrheitstafeln, algebraischer Umformung oder durch erzeugen einer 
 		\item Korrektheit folgt aus der Allgemeingültigkeit von $(A \Rightarrow B) \Rightarrow ((\neg B) \Rightarrow (\neg A))$.
 	\end{itemize}
 \end{itemize}
+\end{frame}
+
+\subsection{Beispiele}
+\begin{frame}{Beispiel: Direkter Beweis}
+\begin{theorem}{Quadrate ungerader Zahlen sind ungerade}
+Das Quadrat einer ungeraden Zahl $n$, wobei $n \in \mathbb{N}_0$, sei immer ungerade.
+\end{theorem}
+\end{frame}
+
+\begin{frame}{Beispiel: Direkter Beweis}
+\begin{proof}
+$n$ sei eine ungerade Zahl. Dann ist lässt sich $n$ als $n = 2 \cdot k + 1, k \in \mathbb{N}_0$ schreiben. Hieraus folgert:
+\begin{align*}
+n^2 &= (2 \cdot k +1 )^2\\
+\Leftrightarrow &= 4 \cdot k^2 + 4 \cdot k + 1 \\
+\Leftrightarrow &= 2 \cdot (2k^2 +2k) +1
+\end{align*}
+Nun ist $n^2$ ungerade, da aus $k \in \mathbb{N}_0$ und $(2k^2 +2k) \in \mathbb{N}_0$ und eine Vielfaches von $2$ immer eine gerade Zahl folgt. Die Addition der 1 ergibt eben die ungerade Zahl. 
+\end{proof}
+\end{frame}
+
+\begin{frame}{Beispiel: Indirekter Beweis}
+\begin{theorem}[Größte Primzahlen]
+Es gibt keine größte Primzahl $p$.
+\end{theorem}
+\end{frame}
+
+\begin{frame}{Beispiel: Indirekter Beweis}
+\begin{proof}[Größte Primzahlen]
+Annahme: Es gebe nur endlich viele Primzahlen. D.h. es gibt eine endliche Menge von Primzahlen $\mathbb{P} = \{p_1, p_2, \ldots, p_r\}$. Konstruieren wir eine neue Primzahl aus allen Faktoren von $\mathbb{P}$ und addieren 1 hinzu. Die neue Zahl sei also $p_{r^+} := p_1 \cdot \ldots \cdot p_r + 1$ und $p$ sei ein Primteiler von  $p_{r^+}$. Dann ist $p$ aber verschieden der $p_i \in \mathbb{P}$, da sonst $p | p_{r^+}$ oder $p | p_1 \cdot \ldots \cdot p_r$ gelten würde.\\
+Dies steht im Widerspruch zur Annahme des Satzes! Es kann also nicht endlich viele Primzahlen geben.
+\end{proof}
 \end{frame}
 
 \subsection{Vollständige Induktion}
@@ -425,11 +457,11 @@ $2^0 = 2^{0+1}-1 \Leftrightarrow 1 = 1 \surd$\\
 	\item Induktionsschritt (IS):
 \begin{align*}
 \varphi(n) & \Rightarrow \varphi(n^+)\\
-2^0 + 2^1 + \dots + 2^n + 2^{n+1} &= 2^{(n+1)+1}-1\\
-\textbf{Anm.: } 2^0 + 2^1 + \dots 2^n &= 2^{n+1} -1  \\
-\Leftrightarrow  2^{n+1} -1 + 2^{n+1} &= 2^{(n+1)+1}-1\\
-\textbf{Anm.: } a^n + a^m &= 2^{n+m}\\
-\Leftrightarrow  2^{n+2} -1 &= 2^{(n+2)}-1 \surd
+\color{blue}{2^0 + 2^1 + \dots + 2^n} + 2^n{n+1} &= 2^{n+2} -1 \quad\text{nach Voraussetzung wahr}\\
+\Leftrightarrow  (2^{n+1} -1) + (2^{n+1}) &= 2^{(n+1)+1}-1  \quad\text{Einsetzen der Voraussetzung}\\
+\textbf{Anm.: } a^n \cdot a^m &= a^{n+m}\\
+\Leftrightarrow  2^{n+1} \cdot 2^{n+1} -1 &= 2^{(n+1)+1}-1\\
+\Leftrightarrow  2^{(n+2)} -1 &= 2^{(n+2)}-1 \surd
 \end{align*}
 \end{enumerate}
 \end{proof}
@@ -453,6 +485,34 @@ $$\text{nach IA und IS } \Rightarrow \varphi(n) (\forall n(\varphi(n)))$$
 \end{enumerate}
 \end{proof}
 \end{frame}
+
+\begin{frame}{Kleiner Gauß}
+\begin{theorem}
+Die Gaußsche Summenformel ist eine Formel für die Summe der ersten $n$ aufeinanderfolgenden natürlichen Zahlen: 
+$$
+	0 + 1 + 2 + \ldots + n = \sum_{i=1}^{n} i = \frac{n(n + 1)}{2} = \frac{n^2 + n }{2}
+$$
+\end{theorem}
+\end{frame}
+
+\begin{frame}
+\vspace*{-1cm}
+\begin{proof}[Kleiner Gauß]
+\begin{enumerate}
+	\item Induktionsanfang: $\varphi(1)$ soll gelten $\frac{1(1 + 1)}{2} =  1  \qquad \surd$\\
+	Vorausstzung, z.z.: $\sum_i^{i+1} = \frac{(n + 1)(n + 1 + 1)}{2} = \frac{(n + 1)(n + 2)}{2}$
+	\item Induktionsschritt:
+\begin{align*}
+\sum_{i=0}^{n+1} i &= \sum_{i=0}^{n} i + (n+1) \\
+&= \frac{n(n + 1)}{2} + (n + 1) \\
+&= \frac{n(n + 1) + 2 \cdot (n + 1)}{2} \\
+&= \frac{(n + 1)(n + 2)}{2} \qquad \surd
+\end{align*}
+	\item Induktionsschluss: $\text{nach IA und IS } \Rightarrow \varphi(n) (\forall n(\varphi(n)))$
+\end{enumerate}
+\end{proof}
+\end{frame}
+
 
 \section{Strukturelle Induktion}
 \begin{frame}{Strukturelle Induktion}
@@ -514,7 +574,7 @@ $$
 \textbf{Induktionsanfang (IA):} Sei $\varphi$ ein nicht zusammengesetzter Ausdruck. Wir betrachten alle Ausdrücke f der Länge 1:
 \begin{itemize}
 	\item[Fall 1] $\varphi = 0$\\
-	$\overline{\varphi(0, 1, x_1 , \ldots , x_n , \land, \lor, \neg)} = 0 = 1 = \varphi(1, 0, \overline{x_1} , \ldots ,\overline{x_n} , \lor, \land, \neg)$
+	$\overline{\varphi(0, 1, x_1 , \ldots , x_n , \land, \lor, \neg)} = \overline{0} = 1 = \varphi(1, 0, \overline{x_1} , \ldots ,\overline{x_n} , \lor, \land, \neg)$
 	\item[Fall 2] $\varphi = 1$\\
 	$\overline{\varphi(0, 1, x_1 , \ldots , x_n , \land, \lor, \neg)} = 1 = 0 = \varphi(1, 0, \overline{x_1} , \ldots ,\overline{x_n} , \lor, \land, \neg)$
 	\item[Fall 3] $\varphi = x_i$\\
@@ -533,11 +593,11 @@ alle Unterterme von $f$ bereits bewiesen.\\
 \begin{frame}{Beweis: Negationstheorem}
 \begin{proof}
 \textbf{Induktionsschritt (IS):} Wir unterscheiden drei Fälle:\\
-Fall 1: $\varphi = \overline{\varphi}$
+Fall 1: $\varphi = \overline{\varphi}_1$
 \begin{align*}
 &\quad \overline{\varphi(0, 1, x_1 , \ldots , x_n , \land, \lor, \neg)}\\
-&= \overline{\overline{\varphi(0, 1, x_1 , \ldots , x_n , \land, \lor, \neg)}}\\
-&\overset{IV}= \overline{\varphi(1, 0, \overline{x_1} , \ldots ,\overline{x_n} , \lor, \land, \neg)}\\
+&= \overline{\overline{\varphi_1(0, 1, x_1 , \ldots , x_n , \land, \lor, \neg)}}\\
+&\overset{IV}= \overline{\varphi_1(1, 0, \overline{x_1} , \ldots ,\overline{x_n} , \lor, \land, \neg)}\\
 &= \varphi(1, 0, \overline{x_1} , \ldots ,\overline{x_n} , \lor, \land, \neg)
 \end{align*}
 \end{proof}
@@ -546,7 +606,7 @@ Fall 1: $\varphi = \overline{\varphi}$
 \begin{frame}{Beweis: Negationstheorem}
 \begin{proof}
 \textbf{Induktionsschritt (IS):} Wir unterscheiden drei Fälle:\\
-Fall 2: $\varphi = \varphi \land \varphi$
+Fall 2: $\varphi = \varphi_1 \land \varphi_2$
 \begin{align*}
 &\quad \overline{\varphi(0, 1, x_1 , \ldots , x_n , \land, \lor, \neg)}\\
 &= \overline{\varphi_1(0, 1, x_1 , \ldots , x_n , \land, \lor, \neg) \land \varphi_2(0, 1, x_1 , \ldots , x_n , \land, \lor, \neg)}\\
@@ -560,7 +620,7 @@ Fall 2: $\varphi = \varphi \land \varphi$
 \begin{frame}{Beweis: Negationstheorem}
 \begin{proof}
 \textbf{Induktionsschritt (IS):} Wir unterscheiden drei Fälle:\\
-Fall 3: $\varphi = \varphi \lor \varphi$
+Fall 3: $\varphi = \varphi_1 \lor \varphi_2$
 \begin{align*}
 &\quad \overline{\varphi(0, 1, x_1 , \ldots , x_n , \land, \lor, \neg)}\\
 &= \overline{\varphi_1(0, 1, x_1 , \ldots , x_n , \land, \lor, \neg) \lor \varphi_2(0, 1, x_1 , \ldots , x_n , \land, \lor, \neg)}\\
@@ -571,7 +631,7 @@ Fall 3: $\varphi = \varphi \lor \varphi$
 \end{proof}
 \end{frame}
 
-\begin{frame}{Negationstheorem \& De Morgansche Regel}
+\begin{frame}{Negationstheorem \& De Morgan'sche Regel}
 \begin{itemize}
 	\item Mithilfe des Negationstheorem haben wir die De Morgansche Regel bewiesen:
 	\begin{itemize}
@@ -592,7 +652,7 @@ $$
 $$
 ein Gesetz der booleschen Algebra, in der neben Variablen und den Konstanten $0$ und $1$ ausschließlich die Elementarverknüpfungen $\neg, \land$ und $\lor$ vorkommen. Dann ist auch die duale Gleichung
 $$
-\varphi(0, 1, x_1 , \ldots, x_n , \land, \lor, \neg) = \psi(0, 1, x_1 , \ldots, x_n , \land, \lor, \neg)
+\varphi(1, 0, x_1 , \ldots, x_n , \lor, \land, \neg) = \psi(1, 0, x_1 , \ldots, x_n , \lor, \land, \neg)
 $$
 ein Gesetz der booleschen Algebra.
 \end{theorem}
@@ -644,7 +704,7 @@ $\mathcal{M}$ sei eine beliebige Menge von Operatoren. $\mathcal{M}$ ist ein vol
 	\item Vollform: Ausdruck, in dem jede Variable genau einmal vorkommt 
 	\item Vollkonjunktion (\textbf{Minterm}): Ausdruck, in dem sämtliche vereinbarten Variablen (bzw. deren Negate) konjunktiv verbunden sind 
 	\begin{itemize}
-		\item Beispiel: $A,B,C: A \land \neg B \land B$
+		\item Beispiel: $A,B,C: A \land \neg B \land C$
 	\end{itemize}
 	\item Volldisjunktion (\textbf{Maxterm}): Ausdruck, in dem sämtliche vereinbarten Variablen (bzw. deren Negate) disjunktiv verbunden sind
 	\begin{itemize}
@@ -791,14 +851,29 @@ Maskierung von IP-Adressen:
 \includegraphics[scale=0.4]{pictures/UND}
 \end{figure}
 \end{frame}
-\begin{frame}{OR Maskierung}
 
+\begin{frame}{OR Maskierung}
 \begin{center}
 Image Mask
 \begin{figure}
 \includegraphics[scale=0.4]{pictures/OR}
 \end{figure}
 \end{center}
+\end{frame}
+
+\begin{frame}{XOR Encryption}
+\begin{itemize}
+	\item Zufällig gleichverteilter Schlüssel der länge $n$: $k \in \mathcal{K}, \mathcal{K} := \{0,1\}^n, n \in \mathbb{N}$, Schlüsselraum $\mathcal{K}$ ist die Permutationen aller Bitstrings
+	\item Nachricht $m \in \mathcal{M}$ binär kodiert, sodass $m in \{0,1\}^n$
+	\item Nachricht und Schlüssel sind gleich lang
+	\item Verschlüsselung: $Enc_k(m) = m \oplus k = c$
+	\item Entschlüsselung: $Dec_k(c) = c \oplus k = m$
+	\item Korrektheit: $m = Dec_k(Enc_k(m)) = m$, da $m = k \oplus m \oplus k = m$ und $k \oplus k = 0$ den Bitvektor $\vec{0}$ ergibt
+\end{itemize}
+\begin{figure}
+\center
+\includegraphics[scale=0.5]{pictures/otp}
+\end{figure}
 \end{frame}
 
 
