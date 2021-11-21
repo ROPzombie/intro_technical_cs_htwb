@@ -458,9 +458,9 @@ $2^0 = 2^{0+1}-1 \Leftrightarrow 1 = 1 \surd$\\
 \begin{align*}
 \varphi(n) & \Rightarrow \varphi(n^+)\\
 \color{blue}{2^0 + 2^1 + \dots + 2^n} + 2^n{n+1} &= 2^{n+2} -1 \quad\text{nach Voraussetzung wahr}\\
-\Leftrightarrow  (2^{n+1} -1) + (2^{n+1}) &= 2^{(n+1)+1}-1  \quad\text{Einsetzen der Voraussetzung}\\
+\Leftrightarrow  2^{n+1} -1 + 2^{n+1} &= 2^{(n+1)+1}-1  \quad\text{Einsetzen der Voraussetzung}\\
 \textbf{Anm.: } a^n \cdot a^m &= a^{n+m}\\
-\Leftrightarrow  2^{n+1} \cdot 2^{n+1} -1 &= 2^{(n+1)+1}-1\\
+\Leftrightarrow  2^1 \cdot 2^{n+1} -1 &= 2^{(n+1)+1}-1\\
 \Leftrightarrow  2^{(n+2)} -1 &= 2^{(n+2)}-1 \surd
 \end{align*}
 \end{enumerate}
@@ -477,8 +477,9 @@ $2^0 = 2^{0+1}-1 \Leftrightarrow 1 = 1 \surd$\\
 \begin{align*}
 \varphi(n) & \Rightarrow \varphi(n^+)\\
 2^0 + 2^1 + \dots 2^n + 2^{n+1} &= 2^{(n+1)+1}-1\\
-\Leftrightarrow  2^{n+1} -1 + 2^{n+1} &= 2^{(n+1)+1}-1\\
-\Leftrightarrow  2^{n+2} -1 &= 2^{(n+2)}-1 \surd
+\Leftrightarrow  2^{n+1} -1 + 2^{n+1} &= 2^{(n+1)+1}-1 \\
+\Leftrightarrow  2^1 \cdot 2^{n+1} -1 &= 2^{(n+1)+1}-1\\
+\Leftrightarrow  2^{(n+2)} -1 &= 2^{(n+2)}-1 \surd
 \end{align*}
 	\item Induktionsschluss:
 $$\text{nach IA und IS } \Rightarrow \varphi(n) (\forall n(\varphi(n)))$$

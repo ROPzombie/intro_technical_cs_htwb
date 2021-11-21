@@ -1,0 +1,212 @@
+\documentclass[12pt%
+%,draft%
+,aspectratio=169%
+]{beamer}
+%
+\usepackage{fontspec}
+\defaultfontfeatures{Ligatures=TeX}
+%\setsansfont{Liberation Sans}
+\usepackage{polyglossia}
+\setdefaultlanguage{ngerman}
+\include{fu_beamer_template}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+%\usepackage{algorithmic}
+\usepackage{tikz}
+\usetikzlibrary{arrows,shapes,automata,petri,positioning,calc}
+\usepackage{graphicx}
+\usepackage{subfig}
+\usepackage{pgfplots}
+\usepackage{venndiagram}
+\usepackage{ stmaryrd }
+\usepackage[normalem]{ulem}
+\usepackage{circuitikz}
+\usepackage{bohr}
+\usepackage{csquotes}
+
+\setbeamercolor{block title}{use=structure,fg=white,bg=structure.fg!75!black}
+\setbeamercolor{block body}{parent=normal text,use=block title,bg=block title.bg!10!bg}
+
+
+\author{Benjamin Tröster}
+\title[Zahlendarstellung]{Zahlendarstellung}
+%\subtitle[Markov Models]{...}
+%\pgfdeclareimage{titlegraphic}{../res/dwarf_logo2.png}
+%\titlegraphic{\pgfuseimage{titlegraphic}}
+%\date{}
+%\subject{}
+%
+% FU settings
+\institute[HTW Berlin]{Hochschule für Technik und Wirtschaft Berlin}
+%\pgfdeclareimage[height=0.9cm]{logo}{../res/dwarf_logo}
+%\logo{\pgfuseimage{logo}}
+%
+\usepackage[
+backend=biber,
+citestyle=alphabetic,bibstyle=authoryear
+]{biblatex}
+\addbibresource{sources.bib}
+
+
+\begin{document}
+
+\begin{frame}
+\titlepage
+\end{frame}
+
+\begin{frame}{Fahrplan}
+\tableofcontents[hideothersubsections]
+\end{frame}
+
+\section{Einleitung}
+\begin{frame}{Heute}
+\begin{itemize}
+	\item Coronabedingt: Sprung von Schaltkreisen und Transistoren zur Zahlendarstellung
+	\item Ziel: Wir bauen ein Rechenwerk (ALU) aus Schaltkreisen mithilfe von Gattern
+	\item Zwischenziel: Wie können wir die Zahlen im Rechner darstellen?
+	\item Darstellung der natürlichen Zahlen $\mathbb{N} \quad \surd$
+\end{itemize}
+\end{frame}
+
+
+
+\section{Ganzen Zahlen}
+\begin{frame}{Die ganzen Zahlen (anschaulich)}
+\begin{center}
+\Huge{$\ldots, -2, -1, 0,1,2,\ldots$}
+\end{center}
+\begin{itemize}
+	\item kennt (fast) jedes Kind
+	\item beginnen nirgends
+	\item Es gibt positive und negative Zahlen
+	\item Schulden, aber keine Tortenstücke
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Die ganzen Zahlen (konstruktiv)}
+\begin{itemize}
+	\item \textcolor{blue}{Problem}
+	\begin{itemize}
+		\item Ist $n > m$, so hat $x + n = m$ keine Lösung $x \in \mathbb{N}$
+	\end{itemize}
+	\item \textcolor{blue}{Ausweg}
+	\begin{itemize}
+		\item Erweitere $\mathbb{N}$ zu $\{x = (n, m)\}$. Wir schreiben $(n, m) = m - n$.
+	\end{itemize}
+	\item \textcolor{blue}{Neues Problem}
+	\begin{itemize}
+		\item Nicht eindeutig: $x + 2 = 1$ und $x + 1 = 0$ hätten verschiedene Lösungen!
+	\end{itemize}
+	\item \textcolor{blue}{Neuer Ausweg}
+	\begin{itemize}
+		\item Äquivalenzklassen 
+	\end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Anzahl der ganzen Zahlen}
+\begin{center}
+	Gibt es mehr ganze Zahlen als natürliche Zahlen?
+\end{center}
+\end{frame}
+
+\begin{frame}{Anzahl der ganzen Zahlen}
+\begin{center}
+	Gibt es mehr ganze Zahlen als natürliche Zahlen?
+	\begin{itemize}
+		\item \textcolor{red}{Ja!} -- denn $-1 \in \mathbb{Z}$ aber $-1 \not \in \mathbb{N}$
+	\end{itemize}
+\end{center}
+\end{frame}
+
+\begin{frame}{Anzahl der ganzen Zahlen}
+	Gibt es mehr ganze Zahlen als natürliche Zahlen?
+	\begin{itemize}
+		\item \sout{\textcolor{red}{Ja!} -- denn $-1 \in \mathbb{Z}$ aber $-1 \not \in \mathbb{N}$}
+		\item \textcolor{red}{Nein!} -- denn $\mathbb{Z}$ ist abzählbar.
+	\end{itemize}
+	Es gibt eine bijektive Abbildung $\varphi : \mathbb{N} \to \mathbb{Z}$
+\end{frame}
+
+\subsection{Zifferndarstellung}
+\begin{frame}{Zifferndarstellung mit Vorzeichenbit}
+\begin{itemize}
+	\item Darstellung positiver Zahlen
+	$$
+		(z_k z_{k-1} \ldots z_0)q = \sum_{i = 0}^k z_i q^i \qquad z_i \in \mathcal{Z}= \{0,1, \ldots q-1 \}
+	$$
+	\item Zusätzliches Symbol: \enquote{$-$}
+	\item Darstellung negativer Zahlen
+	$$
+		(z_k z_{k-1} \ldots z_0)q = \sum_{i = 0}^k z_i q^i \qquad z_i \in \mathcal{Z}= \{0,1, \ldots q-1 \}
+	$$
+	\item \textcolor{blue}{Technische Realisierung:} Vorzeichenbit
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Dualdarstellung ganzer Zahlen mit Vorzeichenbit}
+$$
+	\mathbb{Z} = \{ \ldots , 111_2 , 110_2 , 101_2 , 000_2 , 001_2 , 010_2 , 011_2 , . . . \}
+$$
+\begin{itemize}
+	\item Darstellung
+	\begin{itemize}
+		\item Eindeutigkeit bei endlich vielen Stellen: 1.Stelle = Vorzeichenbit
+	\end{itemize}
+	\item Keine eindeutige Darstellung von $0: 0 = 000_2 = 100_2$
+	\item Addition natürlicher und ganzer Zahlen grundsätzlich verschieden
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Dualdarstellung ganzer Zahlen mit Einerkomplement}
+\begin{itemize}
+	\item Negative Zahlen werden durch das Invertieren aller Bits gebildet
+	\begin{itemize}
+		\item Null ist eindeutig darstellbar
+		\item Nachteil: Woher weiß ich, ob die Zahl negativ oder positiv ist?
+	\end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Dualdarstellung ganzer Zahlen mit Zweierkomplement}
+\begin{itemize}
+	\item Grundannahme: Feste Anzahl Stellen N
+	\item Kochrezept: Das Zweierkomplement von $n < 0$ erhält man durch:
+	\begin{itemize}
+		\item Dualdarstellung von $-n$, umklappen aller Bits, 1 addieren
+	\end{itemize}
+	\item Beispiel:
+	\begin{itemize}
+		\item Bei $N = 4$ Bits soll $n = -3$ dargestellt werden:
+		\item $-3 \qquad \to \qquad -(0011_2) \qquad \to \qquad 1100_2 \qquad \to \qquad 1101_2$
+	\end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+	\begin{itemize}
+		\item Feste Anzahl Stellen $N$
+		\item Größte darstellbare natürliche Zahl wäre $2^N - 1 = 111 \ldots 111_2$
+		\item Umklappen aller Bits von $n \leq 0$ entspricht: $(2^N - 1) - n = 1 \ldots 1_2 - n$
+		\item Addieren von eins führt zu: $(2^N - 1) - n + 1 = 1 \ldots 1 - n + 1$
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Beispiel Dualzahlen}
+\begin{itemize}
+	\item Umrechnung von $-741_{10}$ in dual mithilfe des Zweierkomplements
+\end{itemize}
+\end{frame}
+
+
+\section*{Quellen}
+\appendix
+\begin{frame}[allowframebreaks]
+  \frametitle<presentation>{Quellen}
+\printbibliography
+\end{frame}
+\end{document}

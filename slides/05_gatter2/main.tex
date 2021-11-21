@@ -85,309 +85,7 @@ citestyle=alphabetic,bibstyle=authoryear
 \tableofcontents[hideothersubsections]
 \end{frame}
 
-\section{Recap}
-\begin{frame}{Bool'sche Algebra nach Huntington (\textbf{Wichtig!})}
-\begin{definition}
-Die bool'sche Algebra nach Huntington ist definiert als Menge $\mathcal{V}: \{0,1\}$ mit den Verknüpfungen $\cdot (\land), + (\lor)$, sodass $\mathcal{V} \times \mathcal{V} \to \mathcal{V}$, also $\{0,1\} \times \{0,1\} \to \{0,1\}$. 
-\end{definition}
-\begin{itemize}
-	\item Kommutativgesetze (K): $a \cdot b = b \cdot a$ bzw. $a + b = b + a$
-	\item Distributivgesetze (D): $a \cdot (b + c) = (a \cdot b) + (a \cdot c)$ bzw. $a + (b \cdot c) = (a + b) \cdot (a + c)$
-	\item Neutrale Elemente (N): $ \exists e, n \in \mathcal{V}$ mit  $a \cdot e = a$ und $a + n = a$
-	\item Inverse Elemente (I): $\forall a \in \mathcal{V}$ existiert ein $a'$ mit $a \cdot a'= n$ und $a + a' = e$
-\end{itemize}
-Übernommen von \cite{barnett2013boolean} bzw. \cite{hoffmann2020grundlagen}
-\end{frame}
-
-\begin{frame}{Notation und Operatorenbindung}
-\begin{itemize}
-	\item Syntactic Sugar (Ableitungen aus Basisverknüpfungen)
-	\begin{itemize}
-		\item $(a \Rightarrow b)$ für $(\neg a \lor b)$ -- Implikation
-		\item $(a \Leftarrow b)$ für $(b \Rightarrow a)$ -- Inversion der Implikation
-		\item $(a \Leftrightarrow b)$ für $(a \Rightarrow b) \land (a \Leftarrow b)$ -- Äquivalenz
-		\item $(a \oplus b)$ für $\neg (a \Leftrightarrow b)$ -- Antivalenz oder Exklusiv-ODER/XOR
-		\item $\neg(a \lor b)$ -- NOR
-		\item $\neg (a \land b)$ -- NAND
-	\end{itemize}
-	\item Bindung der Operatoren 
-	\begin{itemize}
-		\item $\land$ bindet stärker als $\lor$
-		\item $\neg$ bindet stärker als $\land$
-	\end{itemize}
-	\item Klammerung
-	\begin{itemize}
-		\item Gleiche Verknüpfungen: linksassoziativ zusammengefasst
-	\end{itemize}
-\end{itemize}	 
-\end{frame}
-
-\begin{frame}{Erfüllbarkeit}
-	\begin{definition}[Erfüllbarkeit]
-		Sei $\varphi$ ein beliebiger boolescher Ausdruck. $\varphi$ heißt
-		\begin{itemize}
-			\item erfüllbar, wenn es Werte $x_1, \ldots, x_n$ gibt, mit $\varphi (x_1, \ldots, x_n ) = 1$.
-			\item widerlegbar, wenn es Werte $x_1, \ldots, x_n$ gibt, mit $\varphi (x_1, \ldots, x_n) = 0$.
-			\item unerfüllbar, wenn $\varphi (x_1 ,\ldots , x_n )$ immer gleich $0$ ist.
-			\item allgemeingültig, wenn wenn $\varphi (x_1 ,\ldots , x_n )$ immer gleich $1$ ist.
-		\end{itemize}
-		Einen allgemeingültigen Ausdruck bezeichnen wir auch als \textbf{Tautologie}.
-	\end{definition}
-\end{frame}
-
-
-\begin{frame}{Negationstheorem}
-\begin{theorem}[Negationstheorem]
-Sei $f(0, 1, x_1 , \ldots , x_n , \land, \lor, \neg)$ ein boolescher Ausdruck, in dem neben den Konstanten $1$ und $0$ und den Variablen $x_1 ,\ldots, x_n$ die booleschen Operatoren $\land, \lor$ und $\neg$ vorkommen. Dann gilt:
-$$
-	\overline{f(0, 1, x_1 , \ldots , x_n , \land, \lor, \neg)} = f(1, 0, \overline{x_1}, \ldots ,\overline{x_n} ,\lor, \land, \neg)
-$$
-\end{theorem}
-\end{frame}
-
-\begin{frame}{Dualitätsprinzip}
-\begin{theorem}
-Sei
-$$
-\varphi(0, 1, x_1 , \ldots, x_n , \land, \lor, \neg) = \psi(0, 1, x_1 , \ldots, x_n , \land, \lor, \neg)
-$$
-ein Gesetz der booleschen Algebra, in der neben Variablen und den Konstanten $0$ und $1$ ausschließlich die Elementarverknüpfungen $\neg, \land$ und $\lor$ vorkommen. Dann ist auch die duale Gleichung
-$$
-\varphi(0, 1, x_1 , \ldots, x_n , \land, \lor, \neg) = \psi(0, 1, x_1 , \ldots, x_n , \land, \lor, \neg)
-$$
-ein Gesetz der booleschen Algebra.
-\end{theorem}
-\end{frame}
-
-\begin{frame}{Vollständige Operatorensysteme}
-\begin{definition}[Vollständige Operatorensystem]
-$\mathcal{M}$ sei eine beliebige Menge von Operatoren. $\mathcal{M}$ ist ein vollständiges Operatorensystem, wenn sich jede boolesche Funktion durch einen Ausdruck beschreiben lässt, in dem neben den Variablen $x_1 , \ldots , x_n$ ausschließlich Operatoren aus $\mathcal{M}$ vorkommen.
-\end{definition}
-\begin{itemize}
-	\item Die Elementaroperatoren $\land, \lor$ und $\neg$ bilden zusammen ein vollständiges Operatorensystem
-	\item Die Operatoren NAND und NOR bilden jeder für sich bereits ein vollständiges Operatorensystem
-	\item Die Implikation und die $0$ bilden zusammen ebenfalls ein vollständiges Operatorensystem
-\end{itemize}
-\end{frame}
-
-\begin{frame}{Normalformdarstellungen}
-\begin{itemize}
-	\item Normalform beschreibt eine eindeutige Darstellung
-	\item Vollform: Ausdruck, in dem jede Variable genau einmal vorkommt 
-	\item Literal: Teilausdruck, der entweder negierte oder unnegierte Variable darstellt
-	\item Wahrheitstafeldarstellung ist eine Art der Normalformdarstellungen
-	\item Bool'sche Ausdrücke hingegen sind keine Normalformdarstellung
-	\begin{itemize}
-		\item Jede bool'sche Funktion durch unendlich viele Ausdrücke beschrieben werden
-	\end{itemize}
-\end{itemize}
-\end{frame}
-
-\begin{frame}{Disjunktive Normalform}
-\begin{itemize}
-	\item Die disjunktive Normalform (DNF) ist jene Darstellungsart, bei der eine Reihe von Vollkonjunktionen disjunktiv verknüpft wird. Negationen  treten nur in atomarer Form auf.
-	\begin{itemize}
-		\item $(A \land \neg B \land C) \lor (A \land B \land C) \lor (\neg A \land \neg B \land C)$ 
-	\end{itemize}
-	\item \item Die konjunktive Normalform (KNF) ist jene Darstellungsart, bei der eine Reihe von Volldisjunktionen konjunktiv verknüpft wird. Negationen treten nur in atomarer Form auf.
-	\begin{itemize}
-		\item $(\neg A \lor \neg B \lor \neg C) \land (A \lor B \lor C) \land (A \lor \neg B \lor \neg C)$ 
-	\end{itemize}
-	\item Andere Bezeichnungen:
-	\begin{itemize}
-		\item Kanonische disjunktive/konjunktive Normalform (KDNF/KKNF)
-		\item Vollständige disjunktive/konjunktive Normalform
-	\end{itemize}
-\end{itemize}
-\end{frame}
-
-\begin{frame}{Bitweise logische Operationen}
-\begin{center}
-$A,B$ seien Bitvektoren, $\circ$ eine beliebige Verknüpfung
-\begin{figure}
-\includegraphics[scale=0.3]{pictures/bitvec}
-\end{figure}
-Dann erhalten wir als Ergebnis: $E = A \circ B$
-\end{center}
-\end{frame}
-
-\section{Einleitung}
-\begin{frame}{Heute:}
-\begin{itemize}
-	\item Von der Bool'schen Algebra zu Logikgattern
-	\item Logische Schaltung auf Mikroprozessoren
-	\item Idee der Arithmetic Logic Unit (also Co-Prozessor oder integriert)
-	\item Grundlegende Logikgatter
-	\item Grundlagen Leiter und Halbleiter
-	\item Aufbau Transistor
-	\item Transistortypen: Biopolar- und Feldeffekttransistor
-	\item Vom Transistor zur logischen Schaltung
-\end{itemize}
-\end{frame}
-\subsection{Beispiele}
-\begin{frame}
-	\begin{itemize}
-		\item Status: Wir wissen, wie ein Signal von Analog auf Digital gewandelt wird
-		\begin{itemize}
-			\item Gist: wie kommen die Bits in den Rechner
-		\end{itemize}
-		\item Wir wissen, wie logische Aussagen verarbeitet werden können
-		\item Noch offen: Wie werden hieraus komplexe Recheneinheiten?
-		\begin{itemize}
-			\item Erster Schritt wie können Elementarschaltungen realisiert werden
-		\end{itemize}
-	\end{itemize}
-\end{frame}
-
-\begin{frame}{Intel 4004 Prozessor}
-\begin{figure}
-\center
-\includegraphics[scale=0.7]{pictures/4004}
-\end{figure}
-\end{frame}
-
-\begin{frame}{Intel 4004 Prozessor}
-\begin{figure}
-\center
-\includegraphics[scale=0.25]{pictures/4004_2}
-\end{figure}
-\end{frame}
-
-\begin{frame}{4 Bit ALU Package Layout}
-\begin{figure}
-\center
-\includegraphics[scale=0.25]{pictures/layout_alu}
-\end{figure}
-\end{frame}
-
-
-\begin{frame}{4 Bit ALU -- Logikgatter}
-\begin{columns}[T] % align columns
-\begin{column}{.48\textwidth}
-\includegraphics[scale=0.25]{pictures/alu2}
-\end{column}%
-\hfill%
-\begin{column}{.48\textwidth}
-\centering
-\vspace*{1cm}
-\includegraphics[scale=0.4]{pictures/alu1}
-\end{column}%
-\end{columns}
-\end{frame}
-
-\section{Bool'sche Algebra $\to$ Logikgatter}
-\begin{frame}{Bool'sche Algebra $\to$ Logikgatter}
-\begin{itemize}
-	\item Bis jetzt abstrakt -- mathematische Definition der logischen Aussage
-	\item D.h. Zuordnung von Werten auf binärer Ebene
-	\item Umsetzung der bool'schen Funktionen mithilfe von Logikgattern (Gatter)	
-	\item Physikalische Umsetzung beispielsweise mithilfe von Transistoren
-\end{itemize}
-\end{frame}
-
-\begin{frame}{Darstellung Logikgatter}
-\begin{figure}
-\center
-\includegraphics[scale=0.25]{pictures/logikgatter}
-\end{figure}
-\end{frame}
-
-
-\begin{frame}{Beispiel: Paritätsfunktion}
-\begin{columns}[T] % align columns
-\begin{column}{.48\textwidth}
-\vspace*{-1.5cm}
-\begin{itemize}
-	\item Eingänge: $x_1, x_2, x_3, x_4$
-	\item Ausgänge: $y$
-	\item Gatter: $XOR$
-	\item Stufen: $2$
-\end{itemize}
-
-\end{column}%
-\hfill%
-\begin{column}{.48\textwidth}
-\begin{circuitikz} 
-\draw
-(2,0) node[xor port] (xor1) {}
-(2,2) node[xor port] (xor2) {}
-(4,1) node[xor port] (xor3) {}
-(xor1.in 1) node[left](f) {$X_3$}
-(xor1.in 2) node[left](f) {$X_4$}
-(xor2.in 1) node[left](f) {$X_1$}
-(xor2.in 2) node[left](f) {$X_2$}
-(xor1.out) |- (xor3.in 2)
-(xor2.out) |- (xor3.in 1)
-(xor3.out) node[right](j) {$y$};
-;
-\end{circuitikz}
-\end{column}%
-\end{columns}
-\end{frame}
-
-
-\begin{frame}{Beispiel: Paritätsfunktion}
-\begin{columns}[T] % align columns
-\begin{column}{.48\textwidth}
-\begin{itemize}
-	\item Eingänge: $x_1, x_2, x_3, x_4$
-	\item Ausgänge: $y$
-	\item Gatter: $XOR$
-	\item Stufen: $2$
-\end{itemize}
-\begin{table}[]
-\begin{tabular}{|l|l|l|l||l|}\hline
-$x_1$ & $x_2$ & $x_3$ & $x_4$ & $y$ \\ \hline
-0 & 0 & 0 & 0 & 0 \\ \hline
-0 & 0 & 0 & 1 & 1 \\ \hline
-0 & 0 & 1 & 0 & 1 \\ \hline
-0 & 0 & 1 & 1 & 0 \\ \hline
-0 & 1 & 0 & 0 & 1 \\ \hline
-... & & & & \\ \hline
-\end{tabular}
-\end{table}
-\end{column}%
-\hfill%
-\begin{column}{.48\textwidth}
-\begin{circuitikz} 
-\draw
-(2,0) node[xor port] (xor1) {}
-(2,2) node[xor port] (xor2) {}
-(4,1) node[xor port] (xor3) {}
-(xor1.in 1) node[left](f) {$X_3$}
-(xor1.in 2) node[left](f) {$X_4$}
-(xor2.in 1) node[left](f) {$X_1$}
-(xor2.in 2) node[left](f) {$X_2$}
-(xor1.out) |- (xor3.in 2)
-(xor2.out) |- (xor3.in 1)
-(xor3.out) node[right](j) {$y$};
-;
-\end{circuitikz}
-\end{column}%
-\end{columns}
-\end{frame}
-
-\section{Grundlagen}
-
-\begin{frame}{Atommodell nach Bohr}
-\begin{columns}[T] % align columns
-\begin{column}{.48\textwidth}
-\begin{itemize}
-	\item Grundsätzlich: Kern -- Neutronen, Protonen
-	\item Elektronen außerhalb des Kerns, frei beweglich in Orbitalräumen
-	\item Äußerste Schale: Valenzelektronen
-	%\item Valenzband zwischen äußerten Schale und 
-	\item Zusammenschluss von Atomen über die Valenzelektronen
-\end{itemize}
-\end{column}%
-\hfill%
-\begin{column}{.48\textwidth}
-\bohr{1}{H}
-\bohr{2}{He}
-\bohr{14}{Si}
-\end{column}%
-\end{columns}
-\end{frame}
+\section{Wiederholung}
 
 \subsection{Leiter \& Bändermodell}
 \begin{frame}{Leiter \& Bändermodell}
@@ -408,6 +106,36 @@ $x_1$ & $x_2$ & $x_3$ & $x_4$ & $y$ \\ \hline
 \end{figure}
 \end{column}%
 \end{columns}
+\end{frame}
+
+\begin{frame}
+\begin{itemize}
+	\item Aufnahme und Abgabe von Energie bestimmt, ob Elektron zwischen Schalen wechseln kann
+	\item Elektronen, die z. B. aufgrund thermischer Erhitzung Energie aufnehmen, bewegen sich in Richtung der äußeren Schalen.
+	\item Überschreitung des Energieniveau, so verliert das Elektron seine Bindung
+	\begin{itemize}
+		\item Valenzelektron wird ein freies Leitungselektron
+	\end{itemize}
+	\item Lösen des Elektron aus Atom $\to$ Bindungsenergie aufgebracht werden
+	\item Unterscheidet sich zwischen verschiedenen chemischen Substanzen stark!
+	\begin{itemize}
+		\item Isolatoren, z. B. Hartgummi sehr hoch
+		\item Kupfer/Silber, sehr geringe Energiemenge ausreichend, um freie Leitungselektronen zu erzeugen
+	\end{itemize}
+\end{itemize}
+\end{frame}
+
+\subsection{Reine Halbleiter}
+\begin{frame}{Reine Halbleiter}
+\begin{itemize}
+	\item Spezielle Festkörper: sowohl Isolator wie auch elektrischer Leiter
+	\item Eigenschaft aufgrund chemisch/physikalischen Struktur
+	\item Bindungsenergie: Material bei geringen Temperaturen zu Isolator 
+	\item Aber Bindungsenergie klein genug, um bei mäßigen Temperaturen größeren Anzahl Elektronen überwunden zu werden
+	\begin{itemize}
+		\item Bsp.: Germanium eine Temperatur von ca. 50 \textdegree C gute elektrische Leitfähigkeit
+	\end{itemize}
+\end{itemize}
 \end{frame}
 
 \begin{frame}{Siliziumgitter}
@@ -451,7 +179,7 @@ $x_1$ & $x_2$ & $x_3$ & $x_4$ & $y$ \\ \hline
 \begin{itemize}
 	\item Freigesetzten Leitungselektronen richten sich im elektrischen Feld aus
 	\item Freie Elektronen wandern in Richtung der positiven Spannungsquelle
-	\item Gleichzeitig entstehenden Elektronenlöcher bewegen sich in entgegengesetzter Richtung auf den Minuspol zu
+	\item Gleichzeitig entstehende Elektronenlöcher bewegen sich in entgegengesetzter Richtung auf den Minuspol zu
 \end{itemize}
 \end{column}%
 \hfill%
@@ -572,27 +300,7 @@ $x_1$ & $x_2$ & $x_3$ & $x_4$ & $y$ \\ \hline
 	\item Dioden: spezielle Schaltelemente
 	\item Begrenzung des Stromﬂuss richtungsabhängig
 	\item In Durchlassrichtung neutral
-	\item In Sperrrichtung als Isolator
-\end{itemize}
-\end{column}%
-\hfill%
-\begin{column}{.48\textwidth}
-\begin{figure}
-\center
-\includegraphics[scale=0.3]{pictures/halbleiterdiode2}
-\end{figure}
-\end{column}%
-\end{columns}
-\end{frame}
-
-\begin{frame}{Halbleiterdioden -- $pn$-Übergang}
-\begin{columns}[T] % align columns
-\begin{column}{.48\textwidth}
-\begin{itemize}
-	\item Dioden: spezielle Schaltelemente
-	\item Begrenzung des Stromﬂuss richtungsabhängig
-	\item In Durchlassrichtung neutral
-	\item In Sperrrichtung als Isolator
+	\item \textbf{In Sperrrichtung als Isolator}
 	\begin{itemize}
 		\item Anlegen einer Spannung in Sperrrichtung
 		\item Minuspol: $p$-Schicht, Pluspol $n$-Schicht
@@ -617,10 +325,10 @@ $x_1$ & $x_2$ & $x_3$ & $x_4$ & $y$ \\ \hline
 \begin{itemize}
 	\item Dioden: spezielle Schaltelemente
 	\item Begrenzung des Stromﬂuss richtungsabhängig
-	\item In Durchlassrichtung neutral
+	\item \textbf{In Durchlassrichtung neutral}
 	\begin{itemize}
 		\item Anlegen einer Spannung in Sperrrichtung
-		\item Minuspol: $n$-Schicht, Pluspol $p$-Schicht
+		\item Pluspol: $p$-Schicht, Minus $p$-Schicht
 		\item Freie Ladungsträger bewegen sich aufeinander zu
 		\item D.h. Rekombination i.d. Sperrschicht $\to$ Leiter
 	\end{itemize}
@@ -817,6 +525,199 @@ $x_1$ & $x_2$ & $x_3$ & $x_4$ & $y$ \\ \hline
 \includegraphics[scale=0.65]{pictures/nor}
 \end{figure}
 \end{frame}
+
+\subsection{Feldeffekttransistoren}
+\begin{frame}{Feldeffekttransistoren: JFET}
+\begin{columns}[T] % align columns
+\begin{column}{.58\textwidth}
+	\begin{itemize}
+		\item Funktional Äquivalent
+		\item Gate-Anschluss JFET entspricht der Basis
+		\item Drain-Anschluss ist der Kollektor
+		\item Source-Anschluss dem Emitter
+	\end{itemize}
+\end{column}%
+\hfill%
+\begin{column}{.38\textwidth}
+\begin{figure}
+\center
+\includegraphics[scale=0.4]{pictures/npn_jfet}\\
+\includegraphics[scale=0.4]{pictures/pnp_jfet}
+\end{figure}
+\end{column}%
+\end{columns}
+\end{frame}
+
+\begin{frame}{Feldeffekttransistoren: JFET}
+\begin{columns}[T] % align columns
+\begin{column}{.58\textwidth}
+	\begin{itemize}
+		\item Source und Drain sind durch dotierten Halbleiterkanal verbunden
+		\item Mitte durch zwei komplementär dotierte Gebiete -- dem Gate
+		\item Kanal $n$-dotiert und das Gate $p$-dotiert
+		\begin{itemize}
+			\item $n$-Kanal-JFET
+		\end{itemize}
+		\item Kanal $p$-dotierten und $n$ dotierten Gate-Gebiet
+		\begin{itemize}
+			\item $p$-Kanal-JFET
+		\end{itemize}
+	\end{itemize}
+\end{column}%
+\hfill%
+\begin{column}{.38\textwidth}
+\begin{figure}
+\center
+\includegraphics[scale=0.4]{pictures/jfet_aufbau}\\
+\end{figure}
+\end{column}%
+\end{columns}
+\end{frame}
+
+\begin{frame}{$n$-Kanal-JFET}
+\begin{figure}
+\center
+\includegraphics[scale=0.4]{pictures/n_jfet}
+\end{figure}
+\end{frame}
+
+\begin{frame}{$p$-Kanal-JFET}
+\begin{figure}
+\center
+\includegraphics[scale=0.4]{pictures/p_jfet}
+\end{figure}
+\end{frame}
+
+\subsection{MOS-Feldeffekttransistoren}
+\begin{frame}{MOS-Feldeffekttransistoren (MOSFETs)}
+\begin{columns}[T] % align columns
+\begin{column}{.58\textwidth}
+	\begin{itemize}
+		\item MOS-Technik (MOS = Metal Oxide Semiconductor)
+		\item Funktional entspricht MOSFET weitgehend dem JFET
+		\begin{itemize}
+			\item Stromfluss zwischen Source- \& Drain-Anschluss, Gate angelegtes elektrisches Feld beeinflusst
+			\item Wieder zwei Varianten: $p$ und $n$		
+		\end{itemize}
+	\end{itemize}
+\end{column}%
+\hfill%
+\begin{column}{.38\textwidth}
+\begin{figure}
+\center
+\includegraphics[scale=0.4]{pictures/n_mosfet}\\
+\includegraphics[scale=0.4]{pictures/p_mosfet}
+\end{figure}
+\end{column}%
+\end{columns}
+\end{frame}
+
+\begin{frame}{MOS-Feldeffekttransistoren (MOSFETs)}
+\begin{columns}[T] % align columns
+\begin{column}{.58\textwidth}
+	\begin{itemize}
+		\item $p$-dotierten Substrat
+		\item Drain- und Source-Anschlüsse auf $n$-dotierter Gebiete
+		\item Dazwischen Gate, das als dünne Metall- oder Polysiliziumschicht auf Substratoberﬂäche
+		\item Gate und Substrat isolierendes Dielektrikum voneinander getrennt
+		\begin{itemize}
+			\item Wirkt, wie kleiner Kondensator (speichert also die elektrische Ladung)
+		\end{itemize}
+	\end{itemize}
+\end{column}%
+\hfill%
+\begin{column}{.38\textwidth}
+\begin{figure}
+\center
+\includegraphics[scale=0.4]{pictures/intern_mosfet}
+\end{figure}
+\end{column}%
+\end{columns}
+\end{frame}
+
+\begin{frame}{$n$-MOS-Feldeffekttransistoren}
+\begin{itemize}
+	\item $V_{DS}$ die Spannung Drain-Source-Strecke
+	\item $V_{GS}$ die Spannung Gate-Source-Strecke
+	\item Source-Anschluss und das Substrat das gleiche elektrische Potenzial
+	\begin{itemize}
+		\item $V_{GS}$ gleichermaßen die Spannung zwischen Gate \& Substrat.
+	\end{itemize}
+\end{itemize}
+\end{frame}
+
+\begin{frame}{$V_{GS} = 0$}
+\begin{columns}[T] % align columns
+\begin{column}{.62\textwidth}
+	\begin{itemize}
+		\item Drain, Substrat und Source operieren als klassischer $npn$-Übergang
+		\item Halbleiterkristall verhält sich wie entgegengesetzte Dioden
+		\item D.h. Stromfluss in beide Richtungen unterbrochen
+		\item Drain- an Pluspol \& Source-Anschluss Minuspol, so sperrt der linke $pn$-Übergang
+		\item Durch Umpolen der Spannung in Durchlassrichtung geschaltet
+		\begin{itemize}
+			\item Rechter Übergang in den sperrenden Zustand, verhindert den Ladungstransport
+		\end{itemize}
+	\end{itemize}
+\end{column}%
+\hfill%
+\begin{column}{.38\textwidth}
+\begin{figure}
+\center
+\includegraphics[scale=0.5]{pictures/fall1}\\
+\end{figure}
+\end{column}%
+\end{columns}
+\end{frame}
+
+\begin{frame}{$V_{GS} > 0, V_{DS} = 0$}
+\begin{columns}[T] % align columns
+\begin{column}{.62\textwidth}
+	\begin{itemize}
+		\item Positive Spannung gegenüber dem Source-Anschluss
+		\item Minoritätsträger -- $p$-dotierten Substrats die Elektronen, nach oben gezogen
+		\item Grenzschicht zwischen Dielektrium und Substrat rekombinieren mit Elektronenlöchern
+		\item Führt zur Verarmung der Majoritätsträger
+		\item Überschreitet die Spannung Schwellwert,
+		\begin{itemize}
+			\item Mehr Elektronen in Grenzschicht gezogen,
+			\item als für eine vollständige Rekombination gebraucht werden
+		\end{itemize}
+		\item Kleiner, leitender $n$-Kanal entsteht
+		\item Höhere Spannung $\to$ höherer Durchfluss
+	\end{itemize}
+\end{column}%
+\hfill%
+\begin{column}{.38\textwidth}
+\begin{figure}
+\center
+\includegraphics[scale=0.5]{pictures/fall2}\\
+\end{figure}
+\end{column}%
+\end{columns}
+\end{frame}
+
+\begin{frame}{$V_{GS} > 0, V_{DS} > 0$}
+\begin{columns}[T] % align columns
+\begin{column}{.62\textwidth}
+	\begin{itemize}
+		\item Anlegen der Spannung Gate \& Source $\to$ leitende Inversionszone
+		\item Spannung zwischen den beiden Anschlüssen: fließt Strom im geöffneten Kanal
+		\item Verengung der Inversionszone durch die entstehenden elektrischen Felder Richtung des Drain-Anschlusses
+		\item Ab gewisser Spannung: freien Ladungsträgern können nicht mehr passieren
+		\item Sukzessive Erhöhung Spannung Drain-Source-Strecke ab Wert keiner weiteren Erhöhung des Stromflusses führt
+	\end{itemize}
+\end{column}%
+\hfill%
+\begin{column}{.38\textwidth}
+\begin{figure}
+\center
+\includegraphics[scale=0.5]{pictures/fall3}\\
+\end{figure}
+\end{column}%
+\end{columns}
+\end{frame}
+
 
 \section*{Quellen}
 \appendix

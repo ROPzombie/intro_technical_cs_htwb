@@ -1,0 +1,187 @@
+\documentclass[12pt%
+%,draft%
+,aspectratio=169%
+]{beamer}
+%
+\usepackage{fontspec}
+\defaultfontfeatures{Ligatures=TeX}
+%\setsansfont{Liberation Sans}
+\usepackage{polyglossia}
+\setdefaultlanguage{ngerman}
+\include{fu_beamer_template}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+%\usepackage{algorithmic}
+\usepackage{tikz}
+\usetikzlibrary{arrows,shapes,automata,petri,positioning,calc}
+\usepackage{graphicx}
+\usepackage{subfig}
+\usepackage{pgfplots}
+\usepackage{venndiagram}
+\usepackage{ stmaryrd }
+\usepackage[normalem]{ulem}
+\usepackage{circuitikz}
+\usepackage{bohr}
+\usepackage{csquotes}
+
+\setbeamercolor{block title}{use=structure,fg=white,bg=structure.fg!75!black}
+\setbeamercolor{block body}{parent=normal text,use=block title,bg=block title.bg!10!bg}
+
+
+\author{Benjamin Tröster}
+\title[Zahlendarstellung]{Zahlendarstellung}
+%\subtitle[Markov Models]{...}
+%\pgfdeclareimage{titlegraphic}{../res/dwarf_logo2.png}
+%\titlegraphic{\pgfuseimage{titlegraphic}}
+%\date{}
+%\subject{}
+%
+% FU settings
+\institute[HTW Berlin]{Hochschule für Technik und Wirtschaft Berlin}
+%\pgfdeclareimage[height=0.9cm]{logo}{../res/dwarf_logo}
+%\logo{\pgfuseimage{logo}}
+%
+\usepackage[
+backend=biber,
+citestyle=alphabetic,bibstyle=authoryear
+]{biblatex}
+\addbibresource{sources.bib}
+
+
+\begin{document}
+
+\begin{frame}
+\titlepage
+\end{frame}
+
+\begin{frame}{Fahrplan}
+\tableofcontents[hideothersubsections]
+\end{frame}
+
+\section{Einleitung}
+\begin{frame}{Heute}
+\begin{itemize}
+	\item Coronabedingt: Sprung von Schaltkreisen und Transistoren zur Zahlendarstellung
+	\item Ziel: Wir bauen ein Rechenwerk (ALU) aus Schaltkreisen mithilfe von Gattern
+	\item Zwischenziel: Wie können wir die Zahlen im Rechner darstellen?
+	\item Darstellung der natürlichen Zahlen $\mathbb{N} \quad \surd$
+	\item Darstellung der ganzer Zahlen $\mathbb{Z} \quad \surd$
+\end{itemize}
+\end{frame}
+
+
+
+\section{Rationale Zahlen}
+\begin{frame}{Die rationalen Zahlen $\mathbb{Q}$ (anschaulich)}
+$$
+	\mathbb{Q} = \Bigg\{ \frac{a}{b} | a, b \in \mathbb{Z}, b \neq 0 \Bigg\} 
+$$
+Bruchrechenregeln
+$$
+	\frac{a}{b} + \frac{a'}{b'} = \frac{ab' + a'b}{bb'} \qquad \qquad \frac{a}{b} \cdot \frac{a'}{b'} = \frac{aa'}{bb'}
+$$
+Konsequenz
+$$
+	\frac{a}{b} = \frac{a'}{b'}  \qquad \Leftrightarrow \qquad ab' = a'b
+$$
+
+\end{frame}
+
+\begin{frame}{Die rationalen Zahlen $\mathbb{Q}$ (konstruktiv)}
+$$
+	\mathbb{Q} = \Bigg\{ \frac{a}{b} | a, b \in \mathbb{Z}, b \neq 0 \Bigg\} 
+$$
+\textcolor{blue}{Problem}
+\begin{itemize}
+	\item Im Allgemeinen hat $x \cdot b = a$ keine Lösung $x \in \mathbb{Z}$.
+\end{itemize}
+\textcolor{blue}{Konstruktion von $\mathbb{Q}$}
+	\begin{itemize}
+		\item Abschluss von $\mathbb{Z}$ unter Division
+		\item Äquivalenzklassen von Paaren $(a, b)$ mit $a, b \in \mathbb{Z}, b \neq 0$
+	\end{itemize}
+
+\end{frame}
+
+\begin{frame}{Darstellung von $\mathbb{Q}$}
+\begin{theorem}
+Jede Zifferndarstellung von $\mathbb{Q}$ induziert eine Zifferndarstellung von $\mathbb{Q}$.\\
+Ziffernmenge: $\mathcal{Z} \cup \{-\} \cup \{/\}$
+\end{theorem}
+\textcolor{blue}{Folgerung}
+\begin{itemize}
+	\item $\mathbb{Q}$ ist abzählbar
+\end{itemize}
+\textcolor{blue}{Beispiele}
+\begin{itemize}
+	\item Dezimalsystem
+	\item Dualsystem
+\end{itemize}
+\end{frame}
+
+\subsection{q-adische Brüche}
+\begin{frame}{$q$-adische Brüche}
+$$
+	z_n \ldots z_0, z_{-1} \ldots z_{-m} = \sum_{-m}^n z_i q^i, \qquad z_i \in \{0, \ldots, q-1\}, n,m \in \mathbb{N}
+$$
+Beispiele:
+\begin{itemize}
+	\item Dezimalbrüche: $q = 10$
+	\item Dualbruch: $q = 2$
+\end{itemize}
+\begin{theorem}
+Jeder Dualbruch ist ein Dezimalbruch, nicht umgekehrt.
+\end{theorem}
+\begin{theorem}
+Jeder $q$-adische Bruch ist eine rationale Zahl, nicht umgekehrt.
+\end{theorem}
+\end{frame}
+
+\subsection*{Periodische Dezimalbrüche}
+\begin{frame}{Periodische Dezimalbrüche}
+Beispiel:\\
+Periodischer Dezimalbruch (Periodenlänge 3): $0,1234234 \ldots = 0,\overline{1234}$
+
+\textcolor{blue}{Geometrische Reihe}
+$$
+	\sum_{i=0}^\infty q^{-i} = \lim_{m \to \infty} \sum_{i=0}^m q^{-i} = \lim_{m \to \infty} \frac{1 -q^{-(m+1)}}{1 - q^{-1}} = \frac{1}{1 - q^{-1}}
+$$
+\begin{theorem}
+Jeder periodische Dezimalbruch ist eine rationale Zahl und umgekehrt.
+\end{theorem}
+\textcolor{blue}{Eindeutigkeit}
+\begin{itemize}
+	\item Im Allgemeinen ist die Darstellung nicht eindeutig: $1,0 = 0,9$
+	\item Eindeutigkeit erzwingen: $0$ ist verboten.
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Praktische Realisierung im Rechner}
+\begin{itemize}
+	\item Darstellung als Paar von integer-Zahlen
+	\begin{itemize}
+		\item integer = Ganzzahldarstellung im Rechner
+		\item Länge muss variable sein
+		\item Aufwand für Rechenoperationen nicht a priori bekannt (Kürzen!)
+	\end{itemize}
+	\item Keine standardisierte Hardware-Unterstützung
+	\begin{itemize}
+		\item Spezialanwendungen (Schnitterkennung in der Computergraphik)
+		\item Symbolik-Programme (Maple, Mathematica, ...)
+		\item Aufwendig und langsam
+	\end{itemize}
+\end{itemize}
+\end{frame}
+
+
+\section*{Quellen}
+\appendix
+\begin{frame}[allowframebreaks]
+  \frametitle<presentation>{Quellen}
+\printbibliography
+\end{frame}
+\end{document}
