@@ -1,0 +1,153 @@
+%start preamble
+\documentclass[paper=a4,fontsize=11pt]{scrartcl}%kind of doc, font size, paper size
+
+\usepackage{fontspec}
+\defaultfontfeatures{Ligatures=TeX}
+%\setsansfont{Liberation Sans}
+\usepackage{polyglossia}	
+\setdefaultlanguage[spelling=new, babelshorthands=true]{german}
+\usepackage{csquotes}
+		
+\usepackage{amsmath}%get math done
+\usepackage{amsthm}%get theorems and proofs done
+\usepackage{graphicx}%get pictures & graphics done
+\graphicspath{{pictures/}}%folder to stash all kind of pictures etc
+\usepackage{hyperref}%for links to web
+\usepackage{amssymb}%symbolics for math
+\usepackage{amsfonts}%extra fonts
+\usepackage []{natbib}%citation style
+\usepackage{caption}%captions under everything
+\usepackage{listings}
+\usepackage[titletoc]{appendix}
+\numberwithin{equation}{section} 
+\usepackage[printonlyused,withpage]{acronym}%how to handle acronyms
+\usepackage{float}%for garphics and how to let them floating around in the doc
+\usepackage{cclicenses}%license!
+\usepackage{xcolor}%nicer colors, here used for links
+\usepackage{wrapfig}%making graphics floated by text and not done by minipage
+\usepackage{dsfont}
+\usepackage{fancyhdr}
+\usepackage{enumitem}
+
+
+
+%settings colors for links
+\hypersetup{
+    colorlinks,
+    linkcolor={blue!50!black},
+    citecolor={blue},
+    urlcolor={blue!80!black}
+}
+
+\definecolor{pblue}{rgb}{0.13,0.13,1}
+\definecolor{pgreen}{rgb}{0,0.5,0}
+\definecolor{pred}{rgb}{0.9,0,0}
+\definecolor{pgrey}{rgb}{0.46,0.45,0.48}
+
+\pagestyle{fancy}
+\lhead{LtGdI -- Übung\\ Wintersemester 2021/22}
+\rhead{FB-4 -- AI\\ HTW-Berlin}
+%\lfoot{01}
+%\cfoot{}
+%\fancyfoot[R]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+%\renewcommand{\footrulewidth}{0.4pt}
+
+\lstdefinestyle{Bash}{
+  language=bash,
+  showstringspaces=false,
+  basicstyle=\small\sffamily,
+  numbers=left,
+  numberstyle=\tiny,
+  numbersep=5pt,
+  frame=trlb,
+  columns=fullflexible,
+  backgroundcolor=\color{gray!20},
+  linewidth=0.9\linewidth,
+  %xleftmargin=0.5\linewidth
+  upquote=true,
+  columns=fullflexible,
+  literate={*}{{\char42}}1
+         {-}{{\char45}}1
+}
+
+\lstdefinelanguage
+   [x86]{Assembler}
+   [x86masm]{Assembler} % based on the "x86masm" dialect
+   % with these extra keywords:
+   {morekeywords={CDQE,CQO,CMPSQ,CMPXCHG16B,JRCXZ,LODSQ,MOVSXD, %
+                  POPFQ,PUSHFQ,SCASQ,STOSQ,IRETQ,RDTSCP,SWAPGS, %
+                  eax,edx,ecx,ebx,esi,edi,esp,ebp, %
+                  e8,e8d,e8w,e8b,e9,e9d,e9w,e9b, %
+                  e10,e10d,e10w,e10b,e11,e11d,e11w,e11b, %
+                  e12,e12d,e12w,e12b,e13,e13d,e13w,e13b, %
+                  e14,e14d,e14w,e14b,e15,e15d,e15w,e15b}} %
+
+\lstset{language=[x86]Assembler}
+
+
+\lstset{language=C,
+	basicstyle=\ttfamily,
+   	keywordstyle=\color{blue}\ttfamily,
+    stringstyle=\color{red}\ttfamily,
+    commentstyle=\color{cyan}\ttfamily,
+    morecomment=[l][\color{magenta}]{\#}
+    showstringspaces=false,
+  	basicstyle=\small\sffamily,
+  	numbers=left,
+  	numberstyle=\tiny,
+  	numbersep=5pt,
+  	frame=trlb,
+  	upquote=true,
+  	columns=fullflexible,
+  	backgroundcolor=\color{gray!20},
+  	%linewidth=0.9\linewidth,
+  	literate=*{*}{\normalfont{*}}1,
+}
+
+
+\newcommand{\specialcell}[2][c]{%
+  \begin{tabular}[#1]{@{}c@{}}#2\end{tabular}}
+
+%%here begins the actual document%%
+\newcommand{\horrule}[1]{\rule{\linewidth}{#1}} % Create horizontal rule command with 1 argument of height
+
+
+\DeclareMathOperator{\id}{id}
+
+\title{	
+\normalfont \normalsize 
+\textsc{Übungsblatt 01}
+}
+\begin{document}
+\vspace*{-1cm}
+\begin{center}
+\Large{\textbf{Übungsblatt 7}}
+\end{center}
+
+\begin{center}\Large{\textbf{Aufgabe A -- Zahlendarstellung und Rechnen}}\end{center}
+Vorzeichenbehaftete Zahlen
+\begin{enumerate}
+	\item Führen sie die folgenden vier Berechnungen in B+V Darstellung, im Zweierkomplement und in einer Exzessdarstellung durch. Gehen sie von 8-Bit breiten Registern aus. Wählen sie für die Exzessdarstellung einen sinnvollen Offset.
+	\begin{enumerate}
+		\item $23 + 81$
+		\item $36 - 14$
+		\item $72 - 87$
+		\item $-113 - 37$
+	\end{enumerate}
+	\item Beantworten Sie folgende Fragen:
+	\begin{enumerate}
+		\item Begründen sie die Wahl Ihres Offsets.
+		\item Nennen sie zwei Vorteile des Zweierkomplements gegenüber den anderen Darstellungen.
+	\end{enumerate}
+	\item Berechnen sie folgende Gleitkommazahlen nach IEEE-754
+	\begin{enumerate}
+		\item $23,125 + 4,2$
+		\item $7,2 - 10,0005$
+		\item $-0,5 - 0.025$ 
+	\end{enumerate}
+\end{enumerate}
+
+
+
+\end{document}

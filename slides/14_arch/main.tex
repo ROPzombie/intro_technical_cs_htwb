@@ -1,0 +1,138 @@
+\documentclass[12pt%
+%,draft%
+,xcolor=table
+,aspectratio=169%
+]{beamer}
+%
+\usepackage{fontspec}
+\defaultfontfeatures{Ligatures=TeX}
+%\setsansfont{Liberation Sans}
+\usepackage{polyglossia}
+\setdefaultlanguage{ngerman}
+\include{fu_beamer_template}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+%\usepackage{algorithmic}
+\usepackage{tikz}
+\usetikzlibrary{arrows,shapes,automata,petri,positioning,calc}
+\usepackage{graphicx}
+\usepackage{subfig}
+\usepackage{pgfplots}
+\usepackage{ stmaryrd }
+\usepackage[normalem]{ulem}
+\usepackage{circuitikz}
+\usepackage{bohr}
+\usepackage{csquotes}
+
+
+\setbeamercolor{block title}{use=structure,fg=white,bg=structure.fg!75!black}
+\setbeamercolor{block body}{parent=normal text,use=block title,bg=block title.bg!10!bg}
+
+
+\usepackage{expl3}
+
+\ExplSyntaxOn
+\cs_new:Npn \displayasdecimal#1 {(#1) \sb {10}}
+\cs_new:Npn \displayasoctal #1 {(\int_to_oct:n{#1}) \sb 8}
+\cs_new:Npn \displayasbinary #1 {(\int_to_bin:n{#1}) \sb 2}
+\ExplSyntaxOff
+
+\newcounter{divline}
+\def\rlwd{.5pt} \def\rlht{\dimexpr\dp\strutbox+\ht\strutbox} \def\rldp{.75ex}
+\newcommand\mydiv[3][\relax]{%
+  \ifx\relax#1\stepcounter{divline}\else\setcounter{divline}{#1}\fi%
+  \mbox{}\hspace{\thedivline\dimexpr1ex}#2~\setbox0=\hbox{~$#3$}%
+  \dumbstackengine{-\rlwd}{\rule[-\rldp]{\rlwd}{\rlht}~#3}{\rule{\dimexpr4pt+\wd0}{\rlwd}}%
+}
+\def\remainder#1{\stepcounter{divline}%
+  \mbox{}\hspace{\dimexpr1ex+\thedivline\dimexpr1ex}~#1\setcounter{divline}{0}}
+\makeatletter
+\global\newlength\@stackedboxwidth
+\newlength\@boxshift
+\newsavebox\@addedbox
+\newsavebox\@anchorbox
+\newcommand*\dumbstackengine[3]{%
+    \sbox{\@anchorbox}{$#2$}%
+    \sbox{\@addedbox}{$#3$}%
+    \setlength{\@stackedboxwidth}{\wd\@anchorbox}%
+      \ifdim\wd\@addedbox>\@stackedboxwidth%
+        \setlength{\@stackedboxwidth}{\wd\@addedbox}%
+      \fi%
+        \setlength{\@boxshift}{\dimexpr-\dp\@anchorbox -\ht\@addedbox -#1}%
+        \usebox{\@anchorbox}%
+        \hspace{-\wd\@anchorbox}%
+        \raisebox{\@boxshift}{\usebox{\@addedbox}}%
+        \hspace{-\wd\@addedbox}%
+        \hspace{\@stackedboxwidth}%
+}
+
+\newcommand\decbin[9]{%
+\par\smallskip
+\makebox[3cm][r]{$#1$\ }\fbox{#2}\,\fbox{#3}\,\fbox{#4}\,\fbox{#5}\,\fbox{#6}\,\fbox{#7}\,\fbox{#8}\,\fbox{#9}\par}
+
+
+\def\unsignedbytecalc#1{%
+\par\smallskip
+\noindent$#1_{10}$\par
+\smallskip
+\gdef\result{}%
+$\left.\begin{array}{r@{\quad}|c}\udbc{#1}\end{array}\right\}\result$\par}
+
+\def\udbc#1{%
+\ifnum#1=\z@
+\expandafter\@gobble
+\else
+\expandafter\@firstofone
+\fi
+{2)\!\underline{\,#1}&\edef\r{\ifodd#1 1\else 0\fi}\r\xdef\result{\r\result}\\
+\expandafter\udbc\expandafter{\the\numexpr(\ifodd#1 #1-1\else#1\fi)/2\relax}%
+}}
+
+
+\author{Benjamin Tröster}
+\title[Rechnerarchitektur]{Einführung Rechnerarchitektur}
+%\subtitle[Addition \& Subtraktion]{Addition \& Subtraktion}
+%\pgfdeclareimage{titlegraphic}{../res/dwarf_logo2.png}
+%\titlegraphic{\pgfuseimage{titlegraphic}}
+%\date{}
+%\subject{}
+%
+% FU settings
+\institute[HTW Berlin]{Hochschule für Technik und Wirtschaft Berlin}
+%\pgfdeclareimage[height=0.9cm]{logo}{../res/dwarf_logo}
+%\logo{\pgfuseimage{logo}}
+%
+\usepackage[
+backend=biber,
+citestyle=alphabetic,bibstyle=authoryear
+]{biblatex}
+\addbibresource{sources.bib}
+
+
+\begin{document}
+
+\begin{frame}
+\titlepage
+\end{frame}
+
+\begin{frame}{Fahrplan}
+\tableofcontents[hideothersubsections]
+\end{frame}
+
+\section{Zeichenkodierung}
+
+
+
+
+
+\section*{Quellen}
+\appendix
+\begin{frame}[allowframebreaks]
+  \frametitle<presentation>{Quellen}
+\printbibliography
+\end{frame}
+\end{document}

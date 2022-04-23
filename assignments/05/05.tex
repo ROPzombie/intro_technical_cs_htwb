@@ -1,0 +1,252 @@
+%start preamble
+\documentclass[paper=a4,fontsize=11pt]{scrartcl}%kind of doc, font size, paper size
+
+\usepackage{fontspec}
+\defaultfontfeatures{Ligatures=TeX}
+%\setsansfont{Liberation Sans}
+\usepackage{polyglossia}	
+\setdefaultlanguage[spelling=new, babelshorthands=true]{german}
+\usepackage{csquotes}
+		
+\usepackage{amsmath}%get math done
+\usepackage{amsthm}%get theorems and proofs done
+\usepackage{graphicx}%get pictures & graphics done
+\graphicspath{{pictures/}}%folder to stash all kind of pictures etc
+\usepackage{hyperref}%for links to web
+\usepackage{amssymb}%symbolics for math
+\usepackage{amsfonts}%extra fonts
+\usepackage []{natbib}%citation style
+\usepackage{caption}%captions under everything
+\usepackage{listings}
+\usepackage[titletoc]{appendix}
+\numberwithin{equation}{section} 
+\usepackage[printonlyused,withpage]{acronym}%how to handle acronyms
+\usepackage{float}%for garphics and how to let them floating around in the doc
+\usepackage{cclicenses}%license!
+\usepackage{xcolor}%nicer colors, here used for links
+\usepackage{wrapfig}%making graphics floated by text and not done by minipage
+\usepackage{dsfont}
+\usepackage{fancyhdr}
+\usepackage{enumitem}
+
+
+
+%settings colors for links
+\hypersetup{
+    colorlinks,
+    linkcolor={blue!50!black},
+    citecolor={blue},
+    urlcolor={blue!80!black}
+}
+
+\definecolor{pblue}{rgb}{0.13,0.13,1}
+\definecolor{pgreen}{rgb}{0,0.5,0}
+\definecolor{pred}{rgb}{0.9,0,0}
+\definecolor{pgrey}{rgb}{0.46,0.45,0.48}
+
+\pagestyle{fancy}
+\lhead{LtGdI -- Übung\\ Wintersemester 2021/22}
+\rhead{FB-4 -- AI\\ HTW-Berlin}
+%\lfoot{01}
+%\cfoot{}
+%\fancyfoot[R]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+%\renewcommand{\footrulewidth}{0.4pt}
+
+\lstdefinestyle{Bash}{
+  language=bash,
+  showstringspaces=false,
+  basicstyle=\small\sffamily,
+  numbers=left,
+  numberstyle=\tiny,
+  numbersep=5pt,
+  frame=trlb,
+  columns=fullflexible,
+  backgroundcolor=\color{gray!20},
+  linewidth=0.9\linewidth,
+  %xleftmargin=0.5\linewidth
+  upquote=true,
+  columns=fullflexible,
+  literate={*}{{\char42}}1
+         {-}{{\char45}}1
+}
+
+\lstdefinelanguage
+   [x86]{Assembler}
+   [x86masm]{Assembler} % based on the "x86masm" dialect
+   % with these extra keywords:
+   {morekeywords={CDQE,CQO,CMPSQ,CMPXCHG16B,JRCXZ,LODSQ,MOVSXD, %
+                  POPFQ,PUSHFQ,SCASQ,STOSQ,IRETQ,RDTSCP,SWAPGS, %
+                  eax,edx,ecx,ebx,esi,edi,esp,ebp, %
+                  e8,e8d,e8w,e8b,e9,e9d,e9w,e9b, %
+                  e10,e10d,e10w,e10b,e11,e11d,e11w,e11b, %
+                  e12,e12d,e12w,e12b,e13,e13d,e13w,e13b, %
+                  e14,e14d,e14w,e14b,e15,e15d,e15w,e15b}} %
+
+\lstset{language=[x86]Assembler}
+
+
+\lstset{language=C,
+	basicstyle=\ttfamily,
+   	keywordstyle=\color{blue}\ttfamily,
+    stringstyle=\color{red}\ttfamily,
+    commentstyle=\color{cyan}\ttfamily,
+    morecomment=[l][\color{magenta}]{\#}
+    showstringspaces=false,
+  	basicstyle=\small\sffamily,
+  	numbers=left,
+  	numberstyle=\tiny,
+  	numbersep=5pt,
+  	frame=trlb,
+  	upquote=true,
+  	columns=fullflexible,
+  	backgroundcolor=\color{gray!20},
+  	%linewidth=0.9\linewidth,
+  	literate=*{*}{\normalfont{*}}1,
+}
+
+
+\newcommand{\specialcell}[2][c]{%
+  \begin{tabular}[#1]{@{}c@{}}#2\end{tabular}}
+
+%%here begins the actual document%%
+\newcommand{\horrule}[1]{\rule{\linewidth}{#1}} % Create horizontal rule command with 1 argument of height
+
+
+\DeclareMathOperator{\id}{id}
+
+\title{	
+\normalfont \normalsize 
+\textsc{Übungsblatt 01}
+}
+\begin{document}
+\vspace*{-1cm}
+\begin{center}
+\Large{\textbf{Übungsblatt 5}}
+\end{center}
+
+\begin{center}\Large{\textbf{Aufgabe A -- C \& Assembler}}\end{center}
+Die Programmieraufgaben dieses Teil sollen mit dem 64Bit-\enquote{Netwide Assembler}- kurz NASM -- gelöst werden. NASM ist x\_86 Assembler der Intelsyntax verwendet. Wenn Ihnen also ein x86-PC mit einem
+64bit Linux zur Verfügung steht, können Sie sich die NASM-Toolchain auf diesem installieren, ansonsten
+können Sie die Unirechner verwenden.\\
+Folgende Programme benötigen Sie zum NASM-Programmieren. Machen Sie sich mit ihnen vertraut.
+	\begin{itemize}
+		\item nasm
+		\item gcc
+		\item gdb
+		\item (objdump)
+	\end{itemize}
+Weiterhin benötigen sie noch einen Editor zum Schreiben der Programme. Es gibt Editoren, die in einer
+Konsole ausgeführt werden und auch welche, die als \enquote{normales} graphisches Fenster ausgeführt werden.
+Beispiele:
+\begin{itemize}
+	\item nano (Konsole)
+	\item gedit (graphisch)
+	\item kate (graphisch)
+	\item vim (Konsole)
+\end{itemize}
+
+\Large{Intro}
+Der C-Compiler wird auf der Kommandozeile mit cc aufgerufen. Er nimmt u. A. diese Optionen:
+\begin{itemize}
+	\item \texttt{-o output} Der Compiler wir angewiesen das Resultat (kompiliertes Programm) als \enquote{output} zu speichern.
+	\item \texttt{-c} Es wird keine ausführbare Datei erstellt, sondern lediglich eine übersetzte \texttt{.o} -Datei.
+	\item \texttt{-l foo} Es wird die Bibliothek \enquote{„libfoo} dazugelinkt werden, diese muss in einem Suchpfad für Bibliotheken vorhanden sein
+	\item \texttt{-L/path/to/libs} Der Pfad \enquote{/path/to/libs} wird als Suchpfad für Bibliotheken hinzugefügt
+	\item \texttt{-I/path/to/incs} Analog wird dieser Pfad für Header-Dateien hinzugefügt 
+\end{itemize}
+Zusätzlich werden die zu kompilierenden Objekte als Operand dazu übergeben, bspw.:
+\begin{lstlisting}[style=Bash, language=Bash]
+$ cc -o programm source1 .c source2 .c ...
+\end{lstlisting}
+Während cc der standardmäßig als der auf dem System verwendete C-Compiler eingestellt ist, gibt es auf vielen System mehrere Compiler. Auf den Poolrechnern sind dies gcc und clang, wobei ersteter als cc eingesetzt wird.
+Diese Compiler unterstützen viele spezifische Flags, nützlich sind vor allem die, die den Compiler anweisen, einen bestimmten C-Standard zu benutzen:
+\begin{itemize}
+	\item \texttt{-std=c11} Benutzt bei der Kompilation den Standard C11, weitere sind C99, C89 und
+nicht standardkonforme GNU-CC-Varianten davon.
+	\item \texttt{-pedantic} Lässt den Compiler „strikt“ nach Standard arbeiten und lässt keine nicht-
+standardkonformen Programme zu.
+\end{itemize}
+Außerdem kann man Diagnostics anschalten, also Warnungen bei Code der möglicherweise falsch ist.
+\begin{itemize}
+	\item \texttt{-Wall} Schaltet viele sinnvolle Warnungen an
+	\item \texttt{-Wextra} $\ldots$ und noch mehr
+	\item \texttt{-Weverything (Clang)} Schaltet alle Warnungen an
+\end{itemize}
+
+\Large{C Hosted Environment}
+Programmeintrittspunkte\\
+Es gibt verschiedene Möglichkeiten den Programmeintrittspunkt zu schreiben:
+\begin{itemize}
+	\item \texttt{int main(void)}
+	\item \texttt{int main(int argc, char *argv[])}
+\end{itemize}
+	Erstere Variante gibt an, dass das Programm alle vom Nutzer übergebenen Parameter ignoriert, da die Funktion main() keine Möglichkeit hat auf diese zuzugreifen. Möchte man dies jedoch tun, nutzt man die andere Variante, hierbei ist argc der Argument Counter, und gibt somit an wie viele Argumente der Nutzer übergeben hat. Der Argument Vector argv hält die eigentlichen Argumente als Zeichenketten vor, wobei argv[0] (das erste Element im \enquote{Array}) der Programmaufruf ist, also:
+	\begin{lstlisting}[style=Bash, language=Bash]
+$ ./ programm arg1 "arg2 in quotes "
+argv [0]: "./ programm "
+argv [1]: "arg1"
+argv [2]: "arg2 in quotes "
+\end{lstlisting}
+
+Die zweite Variante der main()-Funktion kann man auch anders schreiben:
+\begin{itemize}
+	\item \texttt{int main(int argc, char **argv)}
+	\item \texttt{int main(const int argc, const char *const argv[argc+1])}
+\end{itemize}
+Alle Varianten von main() geben int zurück. Während man jedoch in allen anderen Funktionen die etwas zurückgeben nicht vergessen darf, das auch zu tun (mit return), ist diese Funktion speziell: Es wird implizit 0 zurückgegeben. Der Rückgabewert von main() hat außerdem eine besondere Bedeutung, denn er gibt an, ob das Programm fehlerfrei (Rückgabewert 0) oder fehlerhaft (Rückgabewert 1–255) ablief (mache Programme nutzen den Exit-Code anders, bspw. test(1)).
+
+\textbf{C-Standardbibliothek: stdio.h}
+
+Der Standard-I/O–Header enthält diejenigen Funktionen der C-Standardbibliothek, die wichtig
+für einfache Ein- und Ausgabe (i. d. R. auf der Konsole) sind.
+\paragraph{Die Funktion} puts() Nimmt einen String und gibt ihn auf der Standardausgabe stdout
+aus, und beendet die Zeile mit einem '\textbackslash n'.
+\begin{lstlisting}[language=C]
+int puts( const char *s);
+\end{lstlisting}
+
+\paragraph{Die Funktion} printf() Nimmt als erstes Argument einen Formatstring. Enthält dieser
+Platzhalter werden die dafür benötigten Werte in den weiteren Argumenten in Reihenfolge
+der Platzhalter übergeben. Hängt kein terminierendes '\textbackslash n' an!
+
+\begin{lstlisting}[language=C]
+int printf ( const char *format , ...);
+\end{lstlisting}
+Beispiel für printf()
+\begin{lstlisting}[language=C]
+int main(void) {
+	float pi , daumen ;
+	pi = 3.141;
+	daumen = 13.374;
+	int antwort = pi* daumen ;
+	printf ("Die Antwort auf die Frage nach dem Leben , "
+	/* Stringliterale die aufeinanderfolgen werden einfach
+	zusammengesetzt und zaehlen als eine lange Konstante */
+	"dem Universum und dem ganzen Rest: %d\n", antwort );
+}
+\end{lstlisting}
+Um float auszugeben benutzt man den Platzhalter \%f, für char* (also Strings) \%s.
+\Large{Kontrollstrukturen}
+\textbf{Schleifen}
+\texttt{for}-Schleife Gut geeignet zum iterieren mit Zählvariablen. Dazu werden drei Ausdrücke benutzt, eine Initialisierung, eine Schleifenbedingung und ein Inkrement. Die Initialisierung wird zuerst ausgeführt, danach wird die Schleifenbedingung getestet. Ist sie wahr, wir der Schleifenkörper ausgeführt, danach der Inkrement ausgewertet und dann wieder die Bedingung ausprobiert – solange, bis die Bedingung falsch wird.
+\begin{lstlisting}[language=C]
+for ( Ausdruck 1 ; Ausdruck 2 ; Ausdruck 3 ) {
+/* Anweisungen */
+}
+\end{lstlisting}
+\textbf{Beispielcode}
+
+\begin{lstlisting}[language=C]
+# include <stdio .h>
+
+int main(int argc , char *argv []) {
+	for (int i = 0; i < argc; i++) {
+		printf ("argv [%d]: \"%s\"\n", i, argv[i]);
+	}
+	return (0);
+}
+\end{lstlisting}
+
+
+\end{document}

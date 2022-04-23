@@ -94,9 +94,8 @@
 \begin{center}
 \Large{\textbf{Übungsblatt 1}}
 \end{center}
-\vspace*{-1cm}
 \begin{center}\Large{\textbf{Aufgabe A -- Bool'sche Algebra}}\end{center}
-\vspace*{-.8cm}
+
 \begin{enumerate}
 	\item In der Schaltalgebra gelten die folgenden alternativen Absorptionsgesetze:
 	\begin{align*}
@@ -233,8 +232,13 @@
 		\item $ x_1 \overline{x_2 x_3 x_4} \lor x_1 x_2 \overline{x_3 x_4} \lor x_1 x_2 \overline{x_3} x_4 \lor x_1 \overline{x_2 x_3} x_4 \lor \overline{x_1} x_2 \overline{x_3 x_4} \lor x_1 x_2 x_3 \overline{x_4} \lor \overline{x_1} x_2 x_3 \overline{x_4}$
 		\begin{solution}
 		\begin{align*}
-		& x_1 \overline{x_2 x_3 x_4} \lor x_1 x_2 \overline{x_3 x_4} \lor x_1 x_2 \overline{x_3} x_4 \lor x_1 \overline{x_2 x_3} x_4 \lor \overline{x_1} x_2 \overline{x_3 x_4} \lor x_1 x_2 x_3 \overline{x_4} \lor \overline{x_1} x_2 x_3 \overline{x_4} \\
-		&= x_1 \overline{x_2 x_3 x_4} \lor x_1 x_2 \overline{x_3 x_4} \lor \color{red}{x_1 x_2 \overline{x_3} x_4} \lor x_1 \overline{x_2} \overline{x_3} x_4\\
+		& x_1 \overline{x_2 x_3 x_4} \lor x_1 x_2 \overline{x_3 x_4} \lor x_1 x_2 \overline{x_3} x_4 \lor x_1 \overline{x_2 x_3} x_4 \lor \overline{x_1} x_2 \overline{x_3 x_4} \lor \textcolor{red}{ x_1 x_2 x_3 \overline{x_4} \lor \overline{x_1} x_2 x_3 \overline{x_4} } \\
+		&= x_1 \overline{x_2} \overline{x_3} \overline{x_4} \lor x_1 x_2 \overline{x_3} \overline{x_4} \lor \textcolor{red}{x_1 x_2 \overline{x_3} x_4 \lor x_1 \overline{x_2} \overline{x_3} x_4 } \lor  \overline{x_1} x_2 \overline{x_3} \overline{x_4} \lor x_2 x_3 \overline{x_4}\\
+		&= x_1  \overline{x_2}  \overline{x_3} \overline{x_4} \lor \textcolor{red}{x_1 x_2  \overline{x_3}
+x_1 \overline{x_3} } \lor x_2 \overline{x_4} \lor x_1 \overline{x_3} x_4 \lor \overline{x_1} x_2  \overline{x_3} \overline{x_4} \lor x_2 x_3 \overline{x_4}\\
+		&= x_1 \overline{x_3} \overline{x_4} \lor x_1 \overline{x_3} x_4 \lor \textcolor{red}{\overline{x_1} x_2 \overline{x_3} \overline{x_4} } \lor x_2 x_3 \overline{x_4}\\
+		&= \textcolor{red}{x_1 \overline{x_3} \overline{x_4} \lor x_1 \overline{x_3} x_4} \lor x_2 \overline{x_3} \overline{x_4} \lor x_2 x_3 \overline{x_4}\\
+		&= x_1 \overline{x_3} \lor \textcolor{red}{x_2 \overline{x_3} \overline{x_4} \lor x_2 x_3 \overline{x_4}}\\
 		&= x_1 \overline{x_3} \lor x_2 \overline{x_4}
 		\end{align*}
 		\end{solution}
@@ -377,16 +381,15 @@ $(A \uparrow A) \uparrow (A \uparrow A) \Leftrightarrow \neg(\neg(A)) \Leftright
 
 \begin{proof}
 $\top$ kann durch kombiniertes Anwenden von $\uparrow$ dargestellt werden\\
-aus a) folgt: $(A \uparrow A) \Leftrightarrow \neg A$ daraus folgert: $(A \uparrow A) \uparrow A \Leftrightarrow \neg( A) \uparrow A \Leftrightarrow \top $ da A und seine Negation mittels NAND immer TRUE liefert.
+Wir verwenden einfach a) $\neg$ und c) $\top$
 \end{proof}
 \item $\bot$
 \begin{proof}
 $\bot$ kann durch kombiniertes Anwenden von $\uparrow$ dargestellt werden\\
-Idee: Kontradiktion als Negation der Tautologie, die Tautologie wird mittels $\neg$ invertiert.
+Idee: Kontradiktion als Negation der Tautologie, die Tautologie wird mittels $\neg$ invertiert.\\
 $ \Leftrightarrow \neg \top \Leftrightarrow \bot$  da die Kontradiktion die Inversion der Tautologie ist - also unsere Voraussetzung\\
-$ \Leftrightarrow (A \uparrow A) \uparrow \top$ die Negation aus a) als NAND\\
-$ \Leftrightarrow (A \uparrow A) \uparrow (A \uparrow \neg A)$  die Tautologie aus c) in NAND \\
-$ \Leftrightarrow (A \uparrow A ) \uparrow (A \uparrow (A \uparrow A )) $ die zweite Negation in der Tautologie als NAND.
+$ \Leftrightarrow (\top \uparrow \top)$ die Negation aus a) und die Tautologie aus c)\\
+$\bot = \top \uparrow \top = ((A \uparrow A) \uparrow A) \uparrow ((A \uparrow A) \uparrow A)$
 \end{proof}
 \end{enumerate}
 	\end{solution}

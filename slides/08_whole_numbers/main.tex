@@ -162,6 +162,29 @@ $$
 \end{itemize}
 \end{frame}
 
+\begin{frame}{(Technische Realisierung) Betrag \& Vorzeichen}
+Eine Stelle wird als Vorzeichenbit benutzt.\\
+\begin{itemize}
+	\item MSB = Most Significant Bit
+\end{itemize}
+Das am weitesten links stehende Bit ist das Vorzeichen
+\begin{itemize}
+	\item MSB = 0 $\Rightarrow$ positive Zahl
+	\item MSB = 1 $\Rightarrow$ negative Zahl
+\end{itemize}
+Beispiel (hier \texttt{WORD} Size):
+\begin{itemize}
+	\item $\textcolor{red}{0}001 0010 = +18$
+	\item $\textcolor{red}{1}001 0010 = -18$
+\end{itemize}
+Nachteile:
+\begin{itemize}
+	\item Bei Addition und Subtraktion müssen die Vorzeichen der Operanden gesondert betrachtet werden.
+	\item Es gibt zwei Repräsentationen der Zahl $0$
+	\item Mit positivem und mit negativem Vorzeichen
+\end{itemize}
+\end{frame}
+
 \begin{frame}{Dualdarstellung ganzer Zahlen mit Einerkomplement}
 \begin{itemize}
 	\item Negative Zahlen werden durch das Invertieren aller Bits gebildet
@@ -171,6 +194,8 @@ $$
 	\end{itemize}
 \end{itemize}
 \end{frame}
+
+
 
 \begin{frame}{Dualdarstellung ganzer Zahlen mit Zweierkomplement}
 \begin{itemize}
@@ -196,10 +221,87 @@ $$
 	\end{itemize}
 \end{frame}
 
-\begin{frame}{Beispiel Dualzahlen}
+\begin{frame}{Zweierkomplement-Darstellung}
+Nachteil:
+\begin{itemize}
+	\item Unsymmetrischer Zahlenbereich. Die kleinste negative Zahl ist betragsmäßig um 1 größer als die größte positive Zahl
+\end{itemize}
+Beispiel: 3-Bit-ZK-Zahlen
+\begin{figure}
+\hspace*{4cm}
+\includegraphics[scale=0.32]{pictures/3bitzk}
+\end{figure}
+
+\end{frame}
+
+
+\begin{frame}{Zweierkomplement-Darstellung}
+Nachteil:
+\begin{itemize}
+	\item Alle anderen negativen Zahlen werden um $1$ verschoben, das \texttt{MSB} bleibt aber gleich $1$
+	\item Aus der ersten Stelle kann das Vorzeichen der Zahl abgelesen werden
+	\item Aus dieser Konstruktion ergibt sich der Stellenwert des \texttt{MSB} einer Zweierkomplementzahl mit $n+1$ Bit zu $-2^n$:
+	$$
+		z_n z_{n-1} \ldots z_0 \qquad \text{hat den Wert:}
+	$$
+	$$
+		Z = - (z_n 2^n + z_{n-1} 2^{n-1} + \ldots + z_0)
+	$$
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Darstellung negativer Zahlen -- Beispiel}
+Die Zahl $-77_{10}$ soll mit $8$ Bit dargestellt werden
+\begin{align*}
+	& \quad 77_{10} &= 0100 1101_2 \\
+\text{Mit Vorzeichenbit: } & -77_{10} &= 1100 1101_2 \\
+\text{Einerkomplement: } & -77_{10} &= 1011 0010_2 \\	
+\text{Zweierkomplement: } & -77_{10} &= 1011 0011_2 \\
+\end{align*} 
+\end{frame}
+
+\begin{frame}{Beispiel Zweierkomplement}
 \begin{itemize}
 	\item Umrechnung von $-741_{10}$ in dual mithilfe des Zweierkomplements
 \end{itemize}
+\end{frame}
+
+\begin{frame}{Offset-Dual- (Exzess-)Darstellung}
+\begin{itemize}
+	\item Wird hauptsächlich bei der Exponenten-Darstellung von Gleitkommazahlen benutzt
+	\item Die Darstellung einer Zahl erfolgt in Form ihrer \textcolor{red}{Charakteristik}
+	\item Der gesamte Zahlenbereich wird durch Addition einer Konstanten (Exzess, Offset) so nach oben verschoben, dass die kleinste (negative) Zahl die Darstellung $0\ldots 0$ erhält
+	\begin{itemize}
+		\item Bei $n$ Stellen ist der Offset $2^{n-1}$
+		\item Beispiel: $n=8 \Rightarrow$ Offset $128$
+	\end{itemize}
+	\item Der Zahlenbereich ist hier auch asymmetrisch
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Zusammenfassung der Möglichkeiten}
+\begin{figure}
+\center
+\includegraphics[scale=0.3]{pictures/darstellungen}
+\end{figure}
+\end{frame}
+
+\begin{frame}{Zusammenfassung der Möglichkeiten}
+\begin{table}[]
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+\multicolumn{5}{|c|}{Darstellung mit}                                                                            \\ \hline
+\multicolumn{1}{|l|}{Dezimalzahl} & \multicolumn{1}{l|}{B+V} & \multicolumn{1}{l|}{Einer-Komplement} & \multicolumn{1}{l|}{Zweier-Komplement} & Charakteristik \\ \hline
+-4 & --- & --- & 100 & 000 \\ \hline
+-3 & 111 & 100 & 101 & 001 \\ \hline
+-2 & 110 & 101 & 110 & 010 \\ \hline
+-1 & 101 & 110 & 111 & 011 \\ \hline
+ 0 & 100,000 &111, 000 & 000 & 100 \\ \hline
+ 1 & 001 & 001 & 001 & 101 \\ \hline
+ 2 & 010 & 010 & 010 & 110 \\ \hline
+ 3 & 011 & 011 & 011 & 111 \\ \hline
+\end{tabular}
+\end{table}
 \end{frame}
 
 
